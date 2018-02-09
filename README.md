@@ -32,9 +32,51 @@ Your api should now be running at `http://localhost:3000`
 
 ## RUNNING TESTS
 
+[RSpec](http://rspec.info/) is used to create behavior-driven specs for the project. It is set as the default rake task for the project.
+
+If there are pending database migrations, you must first migrate the test database.
+
+```
+bundle exec rails db:test:prepare
+```
+
+You can then run the tests with the following:
+
+```
+bundle exec rake
+```
+
 ## DEVELOPMENT
 
 ### Database migrations
+
+This project is using [ActiveRecord Migrations](http://guides.rubyonrails.org/active_record_migrations.html).
+
+Rails load ActiveRecord migrations rake tasks to handle our rake tasks for database migrations.
+
+* Creating the databases
+
+```
+bundle exec rails db:create
+```
+
+* Running the migrations
+
+```
+bundle exec rails db:migrate
+```
+
+To run on a different environment
+
+```
+RAILS_ENV=test bundle exec rails db:migrate
+```
+
+* Creating a new database migration
+
+```
+bundle exec rails g migration <migration_name> <options>
+```
 
 ## DEPLOYMENT
 
