@@ -3,7 +3,8 @@ class API::PlayersController < ApplicationController
     player = Player.new player_params
     player.save
 
-    head :created
+    render json: PlayerSerializer.new(player).serialized_json,
+           status: :created
   end
 
   private

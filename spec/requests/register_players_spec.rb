@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe "POST /api/players" do
   context "with a valid request" do
     let(:avatar) { "THIS NEEDS TO BE A BASE64 STRING" }
+    let(:json_response) { JSON.parse(response.body).deep_symbolize_keys }
     let(:parameters) do
       {
         data: {
@@ -32,11 +33,20 @@ RSpec.describe "POST /api/players" do
       expect(player.email_address).to eq "jimmy@example.com"
     end
 
-    xit "returns the json representation of a player"
+    it "returns the json representation of a player" do
+      post "/api/players", params: parameters
+
+      expect(json_response[:data][:type]).to eq "player"
+      expect(json_response[:data][:id]).to eq player.id.to_s
+    end
   end
 
   context "with an incomplete request" do
     xit "requires the player to be valid"
+  end
+
+  context "with an invalid attribute" do
+    xit "returns a bad request"
   end
 
   context "without a correct json content type" do
