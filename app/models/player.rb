@@ -1,3 +1,4 @@
+require "password_encryptor"
 require "token_generator"
 
 class Player < ApplicationRecord
@@ -14,6 +15,6 @@ class Player < ApplicationRecord
 
   def encrypt_password
     self.salt = TokenGenerator.generate
-    self.crypted_password = "PASSWORD"
+    self.crypted_password = PasswordEncryptor.encrypt(self.password, self.salt)
   end
 end
