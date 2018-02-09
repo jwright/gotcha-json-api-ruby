@@ -1,6 +1,8 @@
 Gotcha API
 ============
 
+[ ![Codeship Status for jwright/gotcha-api](https://codeship.com/projects/693f2a80-ef8c-0135-710d-42bca7cc3fec/status?branch=master)](https://codeship.com/projects/271134)
+
 Gotcha where I want 'cha
 
 ## DESCRIPTION
