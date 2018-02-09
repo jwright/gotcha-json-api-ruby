@@ -18,7 +18,7 @@ RSpec.describe PlayerSerializer do
 
     it "serializes the attributes" do
       expect(hash[:attributes].keys).to \
-        match_array [:avatar, :email_address, :first_name, :last_name]
+        match_array [:api_key, :avatar, :email_address, :first_name, :last_name]
       expect(hash[:attributes][:email_address]).to eq player.email_address
     end
   end
