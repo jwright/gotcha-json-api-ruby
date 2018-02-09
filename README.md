@@ -50,6 +50,34 @@ bundle exec rake
 
 ### Database migrations
 
+This project is using [ActiveRecord Migrations](http://guides.rubyonrails.org/active_record_migrations.html).
+
+Rails load ActiveRecord migrations rake tasks to handle our rake tasks for database migrations.
+
+* Creating the databases
+
+```
+bundle exec rails db:create
+```
+
+* Running the migrations
+
+```
+bundle exec rails db:migrate
+```
+
+To run on a different environment
+
+```
+RAILS_ENV=test bundle exec rails db:migrate
+```
+
+* Creating a new database migration
+
+```
+bundle exec rails g migration <migration_name> <options>
+```
+
 ## DEPLOYMENT
 
 ## CONTRIBUTING
