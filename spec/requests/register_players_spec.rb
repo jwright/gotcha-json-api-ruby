@@ -17,6 +17,7 @@ RSpec.describe "POST /api/players" do
         }
       }
     end
+    let(:player) { Player.unscoped.last }
 
     it "returns the correct status" do
       post "/api/players", params: parameters
@@ -24,7 +25,13 @@ RSpec.describe "POST /api/players" do
       expect(response).to have_http_status(:created)
     end
 
-    xit "creates a player"
+    it "creates a player" do
+      expect { post "/api/players", params: parameters }.to \
+        change { Player.count }.by 1
+
+      expect(player.email_address).to eq "jimmy@example.com"
+    end
+
     xit "returns the json representation of a player"
   end
 
