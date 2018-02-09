@@ -34,6 +34,12 @@ RSpec.describe "POST /api/players" do
       expect(player.email_address).to eq "jimmy@example.com"
     end
 
+    it "generates an api key for the player" do
+      post "/api/players", params: valid_parameters
+
+      expect(player.api_key).to_not be_blank
+    end
+
     it "returns the json representation of a player" do
       post "/api/players", params: valid_parameters
 
