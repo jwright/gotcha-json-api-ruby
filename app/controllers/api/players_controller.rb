@@ -1,7 +1,7 @@
 class API::PlayersController < ApplicationController
   def create
     player = Player.new player_params
-    player.save
+    player.save!
 
     render json: PlayerSerializer.new(player).serialized_json,
            status: :created

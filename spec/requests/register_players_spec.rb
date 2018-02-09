@@ -53,7 +53,7 @@ RSpec.describe "POST /api/players" do
       }
     end
 
-    it "returns a bad request" do
+    it "returns a bad request status" do
       post "/api/players", params: parameters
 
       expect(response).to be_bad_request
@@ -63,10 +63,31 @@ RSpec.describe "POST /api/players" do
   end
 
   context "with an invalid attribute" do
-    xit "returns an unprocessable entity"
+    let(:parameters) do
+      {
+        data: {
+          type: "player",
+          attributes: {
+            email_address: "jimmy@example.com",
+          }
+        }
+      }
+    end
+
+    it "returns an unprocessable entity status" do
+      post "/api/players", params: parameters
+
+      expect(response.status).to eq 422
+      expect(json_response[:errors]).to include "Password can't be blank"
+    end
+
+    it "does not create the player" do
+      expect { post "/api/players", params: parameters }.to_not \
+        change { Player.count }
+    end
   end
 
   context "without a correct json content type" do
-    xit "returns a bad request"
+    xit "returns a not found status"
   end
 end
