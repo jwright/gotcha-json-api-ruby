@@ -7,6 +7,8 @@ class Player < ApplicationRecord
   before_validation :encrypt_password
   after_save :clear_virtual_password
 
+  validates :password, presence: true, if: proc { |u| u.crypted_password_changed? }
+
   private
 
   def clear_virtual_password

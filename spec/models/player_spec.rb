@@ -19,4 +19,21 @@ RSpec.describe Player do
       end
     end
   end
+
+  describe "validations" do
+    it "requires a password on creation" do
+      subject.password = nil
+
+      expect(subject).to_not be_valid
+      expect(subject.errors[:password]).to include "can't be blank"
+    end
+
+    it "requires a password on update when changing" do
+      subject = create :player
+      subject.password = nil
+
+      expect(subject).to_not be_valid
+      expect(subject.errors[:password]).to include "can't be blank"
+    end
+  end
 end
