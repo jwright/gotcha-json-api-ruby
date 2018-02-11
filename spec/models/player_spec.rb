@@ -23,6 +23,13 @@ RSpec.describe Player do
   describe "validations" do
     subject { build :player }
 
+    it "requires a name to be present" do
+      subject.name = nil
+
+      expect(subject).to_not be_valid
+      expect(subject.errors[:name]).to include "can't be blank"
+    end
+
     it "requires an email address to be present" do
       subject.email_address = nil
 

@@ -14,8 +14,7 @@ RSpec.describe "POST /api/players" do
       data: {
         type: "player",
         attributes: {
-          first_name: "Jimmy",
-          last_name: "Page",
+          name: "Jimmy Page",
           email_address: "jimmy@example.com",
           password: "p@ssword",
           avatar: avatar

@@ -11,6 +11,7 @@ class Player < ApplicationRecord
                             format: { with: Validations::Email },
                             uniqueness: { case_sensitive: false,
                                           message: "has already been registered" }
+  validates :name, presence: true
   validates :password, presence: true, if: proc { |u| u.crypted_password_changed? }
 
   private
