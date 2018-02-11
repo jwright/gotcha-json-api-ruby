@@ -1,2 +1,4 @@
+require "jsonapi"
+
 Mime::Type.unregister :json
-Mime::Type.register "application/vnd.api+json", :json
+Mime::Type.register JSONAPI::MEDIA_TYPE, :json
