@@ -7,6 +7,11 @@ class Player < ApplicationRecord
   before_validation :encrypt_password
   after_save :clear_virtual_password
 
+  validates :email_address, presence: true,
+                            format: { with: Validations::Email },
+                            uniqueness: { case_sensitive: false,
+                                          message: "has already been registered" }
+  validates :name, presence: true
   validates :password, presence: true, if: proc { |u| u.crypted_password_changed? }
 
   private

@@ -21,6 +21,35 @@ RSpec.describe Player do
   end
 
   describe "validations" do
+    subject { build :player }
+
+    it "requires a name to be present" do
+      subject.name = nil
+
+      expect(subject).to_not be_valid
+      expect(subject.errors[:name]).to include "can't be blank"
+    end
+
+    it "requires an email address to be present" do
+      subject.email_address = nil
+
+      expect(subject).to_not be_valid
+      expect(subject.errors[:email_address]).to include "can't be blank"
+    end
+
+    it "requires an email address to be a valid email format" do
+      subject.email_address = "@test.com"
+
+      expect(subject).to_not be_valid
+      expect(subject.errors[:email_address]).to include "is invalid"
+    end
+
+    it "requires the email address to be unique" do
+      create :player, email_address: subject.email_address
+
+      expect(subject).to_not be_valid
+      expect(subject.errors[:email_address]).to include "has already been registered"
+    end
     it "requires a password on creation" do
       subject.password = nil
 

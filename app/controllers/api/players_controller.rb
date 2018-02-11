@@ -14,8 +14,7 @@ class API::PlayersController < ApplicationController
           .require(:attributes)
           .permit(:avatar,
                   :email_address,
-                  :first_name,
-                  :last_name,
+                  :name,
                   :password)
   end
 end
