@@ -26,7 +26,7 @@ RSpec.describe "POST /api/players" do
   context "with a valid request" do
     let(:player) { Player.unscoped.last }
 
-    it "returns the correct status" do
+    it "returns a created status" do
       post "/api/players", params: valid_parameters, headers: valid_headers
 
       expect(response).to be_created
