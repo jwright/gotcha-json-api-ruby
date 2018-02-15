@@ -57,6 +57,7 @@ GEM
       multi_json (~> 1.12)
       oj (~> 3.3)
     ffi (1.9.18)
+    geocoder (1.4.5)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     i18n (0.9.3)
@@ -158,6 +159,7 @@ DEPENDENCIES
   byebug
   factory_bot_rails
   fast_jsonapi
+  geocoder
   listen (>= 3.0.5, < 3.2)
   pg (~> 0.18)
   puma (~> 3.7)
