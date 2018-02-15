@@ -1,4 +1,5 @@
 require "rails_helper"
+require "shared_examples/request"
 
 RSpec.describe "GET /api/arenas" do
   include APIHelper
@@ -46,6 +47,15 @@ RSpec.describe "GET /api/arenas" do
 
       expect(response).to be_unauthorized
       expect(json_response[:errors]).to eq ["Not authorized"]
+    end
+  end
+
+  it_behaves_like "a request responding to correct headers" do
+    let(:make_request) do
+      -> (headers) do
+        get "/api/arenas", params: valid_parameters,
+                           headers: valid_authed_headers.merge(headers)
+      end
     end
   end
 end
