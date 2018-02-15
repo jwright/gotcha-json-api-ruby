@@ -20,6 +20,24 @@ RSpec.describe Player do
     end
   end
 
+  describe ".with_api_key" do
+    subject { create :player, :authorized }
+
+    it "returns the player with the specified api key" do
+      expect(described_class.with_api_key(subject.api_key)).to eq subject
+    end
+
+    it "returns nil if the player is not found" do
+      expect(described_class.with_api_key("blah")).to be_nil
+    end
+
+    it "returns nil if the api key is blank" do
+      subject.update_attributes api_key: nil
+
+      expect(described_class.with_api_key(nil)).to be_nil
+    end
+  end
+
   describe "validations" do
     subject { build :player }
 
@@ -50,6 +68,7 @@ RSpec.describe Player do
       expect(subject).to_not be_valid
       expect(subject.errors[:email_address]).to include "has already been registered"
     end
+
     it "requires a password on creation" do
       subject.password = nil
 

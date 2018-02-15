@@ -4,7 +4,7 @@ require "token_generator"
 class Player < ApplicationRecord
   attr_accessor :password
 
-  before_validation :encrypt_password
+  before_validation :encrypt_password, on: [:create, :update]
   after_save :clear_virtual_password
 
   validates :email_address, presence: true,
@@ -13,6 +13,10 @@ class Player < ApplicationRecord
                                           message: "has already been registered" }
   validates :name, presence: true
   validates :password, presence: true, if: proc { |u| u.crypted_password_changed? }
+
+  def self.with_api_key(api_key)
+    where(api_key: api_key).first unless api_key.blank?
+  end
 
   private
 
