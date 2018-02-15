@@ -1,6 +1,24 @@
 require "rails_helper"
 
 RSpec.describe Arena do
+  include GeocodingHelper
+
+  describe "geocoding" do
+    let(:latitude) { 39.1234 }
+    let(:longitude) { -104.78941 }
+
+    subject { build :arena, latitude: nil, longitude: nil }
+
+    before { stub_geocoding latitude, longitude }
+
+    it "populates the latitude and longitude based on the address" do
+      subject.save
+
+      expect(subject.latitude).to eq latitude
+      expect(subject.longitude).to eq longitude
+    end
+  end
+
   describe "#address" do
     subject do
       build :arena, street_address1: "123 Main St.",
