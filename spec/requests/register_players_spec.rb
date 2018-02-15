@@ -1,14 +1,9 @@
 require "rails_helper"
 
 RSpec.describe "POST /api/players" do
+  include APIHelper
+
   let(:avatar) { "THIS NEEDS TO BE A BASE64 STRING" }
-  let(:json_response) { JSON.parse(response.body).deep_symbolize_keys }
-  let(:valid_headers) do
-    {
-      "Accept": JSONAPI::MEDIA_TYPE,
-      "Content-type": JSONAPI::MEDIA_TYPE
-    }
-  end
   let(:valid_parameters) do
     {
       data: {

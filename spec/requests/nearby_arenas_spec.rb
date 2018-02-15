@@ -1,19 +1,11 @@
 require "rails_helper"
 
 RSpec.describe "GET /api/arenas" do
-  let(:json_response) { JSON.parse(response.body).deep_symbolize_keys }
+  include APIHelper
+
   let(:latitude) { 39.7799642 }
   let(:longitude) { -86.2728329 }
   let(:player) { create :player, :authorized }
-  let(:valid_authed_headers) do
-    valid_headers.merge("Authorization": "Bearer: #{player.api_key}")
-  end
-  let(:valid_headers) do
-    {
-      "Accept": JSONAPI::MEDIA_TYPE,
-      "Content-type": JSONAPI::MEDIA_TYPE
-    }
-  end
   let(:valid_parameters) do
     {
       latitude: latitude,
