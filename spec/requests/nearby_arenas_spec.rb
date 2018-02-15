@@ -4,6 +4,10 @@ RSpec.describe "GET /api/arenas" do
   let(:json_response) { JSON.parse(response.body).deep_symbolize_keys }
   let(:latitude) { 39.7799642 }
   let(:longitude) { -86.2728329 }
+  let(:player) { create :player, :authorized }
+  let(:valid_authed_headers) do
+    valid_headers.merge("Authorization": "Bearer: #{player.api_key}")
+  end
   let(:valid_headers) do
     {
       "Accept": JSONAPI::MEDIA_TYPE,
@@ -28,13 +32,13 @@ RSpec.describe "GET /api/arenas" do
     end
 
     it "returns an ok status" do
-      get "/api/arenas", params: valid_parameters, headers: valid_headers
+      get "/api/arenas", params: valid_parameters, headers: valid_authed_headers
 
       expect(response).to be_ok
     end
 
     it "returns a json representation of the arenas that are within 5 miles" do
-      get "/api/arenas", params: valid_parameters, headers: valid_headers
+      get "/api/arenas", params: valid_parameters, headers: valid_authed_headers
 
       expect(json_response[:data].length).to eq 2
       expect(json_response[:data].map { |arena| arena[:id].to_i }).to \
@@ -43,6 +47,13 @@ RSpec.describe "GET /api/arenas" do
   end
 
   context "without a valid authorization header" do
-    xit "returns an unauthorized request status"
+    it "returns an unauthorized request status" do
+      not_authed_headers = valid_authed_headers.merge("Authorization": "Bearer BLAH")
+
+      get "/api/arenas", params: valid_parameters, headers: not_authed_headers
+
+      expect(response).to be_unauthorized
+      expect(json_response[:errors]).to eq ["Not authorized"]
+    end
   end
 end
