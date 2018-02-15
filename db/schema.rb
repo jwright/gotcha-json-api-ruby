@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180211190112) do
+ActiveRecord::Schema.define(version: 20180215021843) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "arenas", force: :cascade do |t|
+    t.string "location_name"
+    t.string "street_address1"
+    t.string "street_address2"
+    t.string "city"
+    t.string "state"
+    t.string "zip_code"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "players", force: :cascade do |t|
     t.string "email_address", null: false
