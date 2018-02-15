@@ -1,8 +1,9 @@
 require "rails_helper"
+require "shared_context/request"
 require "shared_examples/request"
 
 RSpec.describe "POST /api/players" do
-  include APIHelper
+  include_context "request"
 
   let(:avatar) { "THIS NEEDS TO BE A BASE64 STRING" }
   let(:valid_parameters) do

@@ -1,8 +1,9 @@
 require "rails_helper"
+require "shared_context/request"
 require "shared_examples/request"
 
 RSpec.describe "GET /api/arenas" do
-  include APIHelper
+  include_context "request"
 
   let(:latitude) { 39.7799642 }
   let(:longitude) { -86.2728329 }
