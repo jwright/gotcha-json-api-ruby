@@ -1,7 +1,11 @@
 require "jsonapi"
 
 class ApplicationController < ActionController::API
-  before_action :verify_content_type_header, :verify_accept_header
+  attr_reader :current_user
+
+  before_action :verify_content_type_header,
+                :verify_accept_header,
+                :set_current_user
 
   rescue_from ActiveRecord::RecordInvalid do |exception|
     render_errors exception.record.errors.full_messages, :unprocessable_entity
@@ -15,6 +19,10 @@ class ApplicationController < ActionController::API
     render_errors exception.message, :not_acceptable
   end
 
+  rescue_from JSONAPI::UnauthorizedError do |exception|
+    render_errors exception.message, :unauthorized
+  end
+
   rescue_from JSONAPI::UnsupportedMediaTypeError do |exception|
     render_errors exception.message, :unsupported_media_type
   end
@@ -25,6 +33,18 @@ class ApplicationController < ActionController::API
     errors = [messages].flatten
 
     render json: { errors: errors }, status: status
+  end
+
+  def require_authorization
+    raise JSONAPI::UnauthorizedError if current_user.nil?
+  end
+
+  def set_current_user
+    if request.headers["Authorization"].present?
+      if token = request.headers["Authorization"].split(" ").last
+        @current_user = Player.with_api_key(token)
+      end
+    end
   end
 
   def verify_accept_header

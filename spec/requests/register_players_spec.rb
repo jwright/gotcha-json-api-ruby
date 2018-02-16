@@ -1,14 +1,7 @@
-require "rails_helper"
+require "request_helper"
 
 RSpec.describe "POST /api/players" do
   let(:avatar) { "THIS NEEDS TO BE A BASE64 STRING" }
-  let(:json_response) { JSON.parse(response.body).deep_symbolize_keys }
-  let(:valid_headers) do
-    {
-      "Accept": JSONAPI::MEDIA_TYPE,
-      "Content-type": JSONAPI::MEDIA_TYPE
-    }
-  end
   let(:valid_parameters) do
     {
       data: {
@@ -26,7 +19,7 @@ RSpec.describe "POST /api/players" do
   context "with a valid request" do
     let(:player) { Player.unscoped.last }
 
-    it "returns the correct status" do
+    it "returns a created status" do
       post "/api/players", params: valid_parameters, headers: valid_headers
 
       expect(response).to be_created
@@ -100,21 +93,12 @@ RSpec.describe "POST /api/players" do
     end
   end
 
-  context "without a correct accept header" do
-    it "returns a not acceptable status" do
-      post "/api/players", params: valid_parameters,
-        headers: valid_headers.merge("Accept": "application/json")
-
-      expect(response).to have_http_status(:not_acceptable)
-    end
-  end
-
-  context "without a correct content type header" do
-    it "returns an unsupported media type status" do
-      post "/api/players", params: valid_parameters,
-        headers: valid_headers.merge("Content-type": "application/json")
-
-      expect(response).to have_http_status(:unsupported_media_type)
+  it_behaves_like "a request responding to correct headers" do
+    let(:make_request) do
+      -> (headers) do
+        post "/api/players", params: valid_parameters,
+                             headers: valid_headers.merge(headers)
+      end
     end
   end
 end

@@ -10,6 +10,12 @@ module JSONAPI
     end
   end
 
+  class UnauthorizedError < RuntimeError
+    def initialize
+      super "Not authorized"
+    end
+  end
+
   class UnsupportedMediaTypeError < RuntimeError
     attr_reader :media_type
 

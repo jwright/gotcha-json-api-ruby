@@ -14,11 +14,13 @@ gem "rack-cors"
 
 gem "bcrypt"
 gem "fast_jsonapi"
+gem "geocoder"
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
   gem "factory_bot_rails"
   gem "rspec-rails"
+  gem "webmock"
 end
 
 group :development do
