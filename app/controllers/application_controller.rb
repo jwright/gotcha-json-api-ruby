@@ -1,6 +1,28 @@
 require "jsonapi"
 
 class ApplicationController < ActionController::API
+  include Swagger::Blocks
+
+  swagger_root do
+    key :swagger, "2.0"
+    key :host, "https://gotcha.run"
+    key :basePath, "/api"
+    key :consumes, [JSONAPI::MEDIA_TYPE]
+    key :produces, [JSONAPI::MEDIA_TYPE]
+    info do
+      key :version, "0.0.1"
+      key :title, "Gotcha API"
+      key :description, "The API that runs the Gotcha application."
+    end
+    security_definition :api_key do
+      key :type, :apiKey
+      key :name, :api_key
+      key :description, "API key specified in the Authorization "\
+                        "header as a Bearer token"
+      key :in, :header
+    end
+  end
+
   attr_reader :current_user
 
   before_action :verify_content_type_header,
