@@ -33,6 +33,22 @@ RSpec.describe "POST /api/arenas/:id/play" do
     end
   end
 
+  context "with an arena already joined" do
+    let!(:player_arena) { create :player_arena, player: player, arena: arena }
+
+    it "returns an ok status" do
+      post "/api/arenas/#{arena.id}/play", params: valid_parameters,
+                                           headers: valid_authed_headers
+
+      expect(response).to be_ok
+    end
+
+    it "does not create a new player arena" do
+      expect { post "/api/arenas/1234/play", params: valid_parameters,
+               headers: valid_authed_headers }.to_not change { PlayerArena.count }
+    end
+  end
+
   context "with an invalid arena id" do
     it "returns a not found status" do
       post "/api/arenas/1234/play", params: valid_parameters,
