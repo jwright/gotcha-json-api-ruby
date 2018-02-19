@@ -24,6 +24,12 @@ RSpec.describe "POST /api/arenas/:id/play" do
       expect(player_arena.arena).to eq arena
     end
 
-    xit "returns a JSON representation of the arena joined"
+    it "returns a JSON representation of the player arena" do
+      post "/api/arenas/#{arena.id}/play", params: valid_parameters,
+                                           headers: valid_authed_headers
+
+      expect(json_response[:data][:type]).to eq "player_arena"
+      expect(json_response[:data][:id]).to eq player_arena.id.to_s
+    end
   end
 end
