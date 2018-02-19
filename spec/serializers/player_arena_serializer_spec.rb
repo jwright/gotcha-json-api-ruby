@@ -18,6 +18,7 @@ RSpec.describe PlayerArenaSerializer do
 
     it "serializes the attributes" do
       expect(hash[:attributes].keys).to match_array [:joined_at]
+      expect(Time.at(hash[:attributes][:joined_at])).to be_a Time
     end
 
     it "serializes the relationships" do
