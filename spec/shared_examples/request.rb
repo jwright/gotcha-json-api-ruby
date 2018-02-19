@@ -17,3 +17,14 @@ RSpec.shared_examples "a request responding to correct headers" do
     end
   end
 end
+
+RSpec.shared_examples "an authenticated request" do
+  context "without a valid authorization header" do
+    it "returns an unauthorized request status" do
+      make_request.call("Authorization": "Bearer BLAH")
+
+      expect(response).to be_unauthorized
+      expect(json_response[:errors]).to eq ["Not authorized"]
+    end
+  end
+end

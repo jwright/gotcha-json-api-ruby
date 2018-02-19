@@ -48,8 +48,13 @@ RSpec.describe "POST /api/arenas/:id/play" do
     end
   end
 
-  context "without a valid authorization header" do
-    xit "returns an unauthorized request status"
+  it_behaves_like "an authenticated request" do
+    let(:make_request) do
+      -> (headers) do
+        post "/api/arenas/#{arena.id}/play", params: valid_parameters,
+                                             headers: valid_headers.merge(headers)
+      end
+    end
   end
 
   it_behaves_like "a request responding to correct headers" do
