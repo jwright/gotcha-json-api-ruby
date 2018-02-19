@@ -7,6 +7,9 @@ class API::ArenasController < ApplicationController
   end
 
   def play
+    player_arena = PlayerArena.create! player_id: current_user.id,
+                                       arena_id: params[:id],
+                                       joined_at: DateTime.now
     head :ok
   end
 end
