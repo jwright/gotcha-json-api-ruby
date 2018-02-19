@@ -7,7 +7,16 @@ class PlayerArenaSerializer
   attributes :joined_at
   belongs_to :arena
 
-  def joined_at
-    record.joined_at.to_i
+  def initialize(resource, options={})
+    super
+    @record = PlayerArenaDecorator.new(@record)
+  end
+
+  private
+
+  class PlayerArenaDecorator < SimpleDelegator
+    def joined_at
+      __getobj__.joined_at.to_i
+    end
   end
 end
