@@ -15,6 +15,7 @@ gem "rack-cors"
 gem "bcrypt"
 gem "fast_jsonapi"
 gem "geocoder"
+gem "swagger-blocks"
 
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
