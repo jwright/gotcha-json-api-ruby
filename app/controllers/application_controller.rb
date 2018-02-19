@@ -11,6 +11,12 @@ class ApplicationController < ActionController::API
     render_errors exception.record.errors.full_messages, :unprocessable_entity
   end
 
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    exception = "#{exception.model} with #{exception.primary_key} "\
+                "#{exception.id} not found"
+    render_errors exception, :not_found
+  end
+
   rescue_from ActionController::ParameterMissing do |exception|
     render_errors exception.message
   end

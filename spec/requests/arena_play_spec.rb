@@ -32,4 +32,32 @@ RSpec.describe "POST /api/arenas/:id/play" do
       expect(json_response[:data][:id]).to eq player_arena.id.to_s
     end
   end
+
+  context "with an invalid arena id" do
+    it "returns a not found status" do
+      post "/api/arenas/1234/play", params: valid_parameters,
+                                    headers: valid_authed_headers
+
+      expect(response.status).to eq 404
+      expect(json_response[:errors]).to include "Arena with id 1234 not found"
+    end
+
+    it "does not create the player arena" do
+      expect { post "/api/arenas/1234/play", params: valid_parameters,
+               headers: valid_authed_headers }.to_not change { PlayerArena.count }
+    end
+  end
+
+  context "without a valid authorization header" do
+    xit "returns an unauthorized request status"
+  end
+
+  it_behaves_like "a request responding to correct headers" do
+    let(:make_request) do
+      -> (headers) do
+        post "/api/arenas/#{arena.id}/play", params: valid_parameters,
+                                             headers: valid_headers.merge(headers)
+      end
+    end
+  end
 end

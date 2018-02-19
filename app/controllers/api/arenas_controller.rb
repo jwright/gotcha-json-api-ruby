@@ -7,8 +7,9 @@ class API::ArenasController < ApplicationController
   end
 
   def play
+    arena = Arena.find params[:id]
     player_arena = PlayerArena.create! player_id: current_user.id,
-                                       arena_id: params[:id],
+                                       arena: arena,
                                        joined_at: DateTime.now
     render json: PlayerArenaSerializer.new(player_arena).serialized_json
   end
