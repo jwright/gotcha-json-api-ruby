@@ -8,11 +8,11 @@ RSpec.describe "POST /api/arenas/:id/play" do
   context "with a valid request" do
     let(:player_arena) { PlayerArena.unscoped.last }
 
-    it "returns an ok status" do
+    it "returns a created status" do
       post "/api/arenas/#{arena.id}/play", params: valid_parameters,
                                            headers: valid_authed_headers
 
-      expect(response).to be_ok
+      expect(response).to be_created
     end
 
     it "joins the player to the arena" do

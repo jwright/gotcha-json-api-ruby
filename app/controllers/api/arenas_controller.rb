@@ -11,6 +11,7 @@ class API::ArenasController < ApplicationController
     player_arena = PlayerArena.create! player_id: current_user.id,
                                        arena: arena,
                                        joined_at: DateTime.now
-    render json: PlayerArenaSerializer.new(player_arena).serialized_json
+    render json: PlayerArenaSerializer.new(player_arena).serialized_json,
+           status: :created
   end
 end
