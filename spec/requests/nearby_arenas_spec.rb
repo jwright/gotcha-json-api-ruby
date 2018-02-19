@@ -36,14 +36,11 @@ RSpec.describe "GET /api/arenas" do
     end
   end
 
-  context "without a valid authorization header" do
-    it "returns an unauthorized request status" do
-      not_authed_headers = valid_authed_headers.merge("Authorization": "Bearer BLAH")
-
-      get "/api/arenas", params: valid_parameters, headers: not_authed_headers
-
-      expect(response).to be_unauthorized
-      expect(json_response[:errors]).to eq ["Not authorized"]
+  it_behaves_like "an authenticated request" do
+    let(:make_request) do
+      -> (headers) do
+        get "/api/arenas", params: valid_parameters, headers: valid_headers.merge(headers)
+      end
     end
   end
 

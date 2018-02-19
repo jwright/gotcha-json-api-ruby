@@ -1,7 +1,6 @@
 class API::PlayersController < ApplicationController
   def create
-    player = Player.new player_params.merge(api_key: TokenGenerator.generate)
-    player.save!
+    player = Player.create! player_params.merge(api_key: TokenGenerator.generate)
 
     render json: PlayerSerializer.new(player).serialized_json,
            status: :created
