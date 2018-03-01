@@ -4,6 +4,7 @@ namespace :docs do
     swaggered_classes = [
       ApplicationController,
       API::ArenasController,
+      ArenaSerializer,
     ]
 
     swagger_data = Swagger::Blocks.build_root_json(swaggered_classes)

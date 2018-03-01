@@ -5,7 +5,9 @@ class ApplicationController < ActionController::API
 
   swagger_root do
     key :swagger, "2.0"
-    key :host, "https://gotcha.run"
+    key "x-api-id", "gotcha-api"
+    key :schemes, ["http"]
+    key :host, "staging.gotcha.run"
     key :basePath, "/api"
     key :consumes, [JSONAPI::MEDIA_TYPE]
     key :produces, [JSONAPI::MEDIA_TYPE]
@@ -13,13 +15,23 @@ class ApplicationController < ActionController::API
       key :version, "0.0.1"
       key :title, "Gotcha API"
       key :description, "The API that runs the Gotcha application."
+      contact do
+        key :name, "Jamie Wright"
+        key :email, "jamie@brilliantfantastic.com"
+      end
+      license do
+        key :name, "MIT"
+      end
     end
-    security_definition :api_key do
+    security_definition :Bearer do
       key :type, :apiKey
-      key :name, :api_key
-      key :description, "API key specified in the Authorization "\
-                        "header as a Bearer token"
+      key :name, :Authorization
       key :in, :header
+      key :description, "API key specified in the Authorization "\
+                        "request header as a Bearer token"
+    end
+    tag name: "ARENAS" do
+      key :description, "Arena operations"
     end
   end
 
