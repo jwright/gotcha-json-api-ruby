@@ -5,6 +5,7 @@ class ArenaSerializer
   include Swagger::Blocks
 
   swagger_schema :Arena do
+    key :type, :object
     key :required, [:id, :location_name, :type]
     property :id do
       key :type, :string
