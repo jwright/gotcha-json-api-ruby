@@ -1,12 +1,14 @@
 require "jsonapi"
 require "swagger/blocks"
 require_relative "arenas"
+require_relative "players"
 
 module Documentation
   module Root
     def self.included(base)
       base.send :include, Swagger::Blocks
       base.send :include, Arenas
+      base.send :include, Players
 
       base.class_eval do
         swagger_root do
@@ -37,6 +39,9 @@ module Documentation
           end
           tag name: "ARENAS" do
             key :description, "Arena operations"
+          end
+          tag name: "PLAYERS" do
+            key :description, "Player operations"
           end
         end
       end
