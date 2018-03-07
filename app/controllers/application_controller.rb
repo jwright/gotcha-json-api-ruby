@@ -1,6 +1,8 @@
-require "jsonapi"
+require_relative "../documentation/root"
 
 class ApplicationController < ActionController::API
+  include Documentation::Root
+
   attr_reader :current_user
 
   before_action :verify_content_type_header,
