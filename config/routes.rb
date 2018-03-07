@@ -5,4 +5,6 @@ Rails.application.routes.draw do
     end
     resources :players, only: :create
   end
+
+  resources :docs, path: "/api/docs", only: :index
 end
