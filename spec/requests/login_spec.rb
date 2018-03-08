@@ -29,4 +29,24 @@ RSpec.describe "POST /api/sessions" do
       expect(json_response[:data][:id]).to eq player.id.to_s
     end
   end
+
+  context "with invalid email address" do
+    let(:parameters) do
+      {
+        data: {
+          attributes: {
+            email_address: "someone-else@example.com",
+            password: password
+          }
+        }
+      }.to_json
+    end
+
+    it "returns an unauthorized status" do
+      post "/api/sessions", params: parameters, headers: valid_headers
+
+      expect(response).to have_http_status(:unauthorized)
+      expect(json_response[:errors]).to include "Not authorized"
+    end
+  end
 end

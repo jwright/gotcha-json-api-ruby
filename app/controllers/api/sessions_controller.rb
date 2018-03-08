@@ -3,7 +3,11 @@ class API::SessionsController < ApplicationController
     player = Player.authenticate(player_params[:email_address],
                                  player_params[:password])
 
-    render json: PlayerSerializer.new(player).serialized_json
+    if player
+      render json: PlayerSerializer.new(player).serialized_json
+    else
+      raise JSONAPI::UnauthorizedError
+    end
   end
 
   private
