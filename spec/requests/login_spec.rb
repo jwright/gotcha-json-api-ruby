@@ -49,4 +49,13 @@ RSpec.describe "POST /api/sessions" do
       expect(json_response[:errors]).to include "Not authorized"
     end
   end
+
+  it_behaves_like "a request responding to correct headers" do
+    let(:make_request) do
+      -> (headers) do
+        post "/api/sessions", params: valid_parameters,
+                              headers: valid_headers.merge(headers)
+      end
+    end
+  end
 end
