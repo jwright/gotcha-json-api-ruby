@@ -1,6 +1,31 @@
 require "rails_helper"
 
 RSpec.describe Player do
+  describe ".authenticate" do
+    let(:password) { "p@ssword" }
+
+    subject { create :player, password: password }
+
+    context "with the correct email and password" do
+      it "returns the player" do
+        expect(described_class.authenticate(subject.email_address, password)).to \
+          eq subject
+      end
+    end
+
+    context "with an incorrect email address" do
+      it "returns nil" do
+        expect(described_class.authenticate("blah", password)).to be_nil
+      end
+    end
+
+    context "with an incorrect password" do
+      it "returns nil" do
+        expect(described_class.authenticate(subject.email_address, "blah")).to be_nil
+      end
+    end
+  end
+
   describe "#password" do
     subject { build :player }
 
@@ -35,6 +60,23 @@ RSpec.describe Player do
       subject.update_attributes api_key: nil
 
       expect(described_class.with_api_key(nil)).to be_nil
+    end
+  end
+
+  describe ".with_email_address" do
+    subject { create :player }
+
+    it "returns the player with the specified email address" do
+      expect(described_class.with_email_address(subject.email_address.upcase)).to \
+        eq subject
+    end
+
+    it "returns nil if the player is not found" do
+      expect(described_class.with_email_address("blah")).to be_nil
+    end
+
+    it "returns nil if the email address is nil" do
+      expect(described_class.with_email_address(nil)).to be_nil
     end
   end
 
