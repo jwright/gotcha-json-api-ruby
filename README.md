@@ -1,7 +1,7 @@
 Gotcha API
 ============
 
-[ ![Codeship Status for jwright/gotcha-api](https://codeship.com/projects/693f2a80-ef8c-0135-710d-42bca7cc3fec/status?branch=master)](https://codeship.com/projects/271134)
+[![CircleCI](https://circleci.com/gh/jwright/gotcha-api.svg?style=svg)](https://circleci.com/gh/jwright/gotcha-api)
 
 Gotcha where I want 'cha
 
