@@ -146,7 +146,7 @@ RSpec.describe Player do
 
     it "requires a password on update when changing" do
       subject = create :player
-      subject.password = nil
+      subject.password = ""
 
       expect(subject).to_not be_valid
       expect(subject.errors[:password]).to include "can't be blank"
