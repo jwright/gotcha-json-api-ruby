@@ -22,6 +22,21 @@ RSpec.describe "POST /api/sessions" do
       expect(response).to be_ok
     end
 
+    it "generates an api key for the user" do
+      post "/api/sessions", params: valid_parameters, headers: valid_headers
+
+      expect(player.reload.api_key).to_not be_blank
+    end
+
+    it "does not regenerate the api key for the user if one already exists" do
+      api_key = "API_KEY"
+      player.update_attributes(api_key: api_key)
+
+      post "/api/sessions", params: valid_parameters, headers: valid_headers
+
+      expect(player.reload.api_key).to eq api_key
+    end
+
     it "returns the json representation of a player" do
       post "/api/sessions", params: valid_parameters, headers: valid_headers
 

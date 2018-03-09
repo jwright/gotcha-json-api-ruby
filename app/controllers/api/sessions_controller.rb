@@ -4,6 +4,8 @@ class API::SessionsController < ApplicationController
                                  player_params[:password])
 
     if player
+      player.generate_api_key!(false)
+
       render json: PlayerSerializer.new(player).serialized_json
     else
       raise JSONAPI::UnauthorizedError
