@@ -4,7 +4,7 @@ require "token_generator"
 class Player < ApplicationRecord
   attr_accessor :password
 
-  before_validation :encrypt_password, on: [:create, :update]
+  before_validation :encrypt_password, if: proc { |p| p.password }
   after_save :clear_virtual_password
 
   validates :email_address, presence: true,
@@ -12,10 +12,27 @@ class Player < ApplicationRecord
                             uniqueness: { case_sensitive: false,
                                           message: "has already been registered" }
   validates :name, presence: true
-  validates :password, presence: true, if: proc { |u| u.crypted_password_changed? }
+  validates :password, presence: true,
+                       if: proc { |p| p.new_record? || p.crypted_password_changed? }
+
+  def self.authenticate(email_address, password)
+    player = with_email_address(email_address)
+    return nil unless player
+    player if PasswordEncryptor.matches?(password, player.crypted_password, player.salt)
+  end
 
   def self.with_api_key(api_key)
     where(api_key: api_key).first unless api_key.blank?
+  end
+
+  def self.with_email_address(email_address)
+    where("LOWER(email_address) = :email_address",
+          email_address: (email_address || "").downcase).first
+  end
+
+  def generate_api_key!(force=true)
+    return false if !force && !api_key.blank?
+    update_attributes(api_key: TokenGenerator.generate)
   end
 
   private
