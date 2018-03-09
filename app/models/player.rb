@@ -29,6 +29,11 @@ class Player < ApplicationRecord
           email_address: (email_address || "").downcase).first
   end
 
+  def generate_api_key!(force=true)
+    return false if !force && !api_key.blank?
+    update_attributes(api_key: TokenGenerator.generate)
+  end
+
   private
 
   def clear_virtual_password

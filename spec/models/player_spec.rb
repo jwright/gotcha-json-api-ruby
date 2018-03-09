@@ -26,6 +26,32 @@ RSpec.describe Player do
     end
   end
 
+  describe "#generate_api_key!" do
+    let(:current_api_key) { "API_KEY" }
+
+    subject { build :player, api_key: current_api_key }
+
+    it "generates a new api key" do
+      subject.generate_api_key!
+
+      expect(subject.api_key).to_not eq current_api_key
+    end
+
+    it "optionally does not generate a new one if it's not nil" do
+      subject.generate_api_key! false
+
+      expect(subject.api_key).to eq current_api_key
+    end
+
+    it "generates a new one if it's nil" do
+      subject.api_key = nil
+
+      subject.generate_api_key! false
+
+      expect(subject.api_key).to_not be_nil
+    end
+  end
+
   describe "#password" do
     subject { build :player }
 
