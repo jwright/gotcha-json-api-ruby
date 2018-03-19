@@ -29,5 +29,18 @@ RSpec.describe "POST /api/devices" do
         change { Device.count }.by 1
       expect(device.token).to eq token
     end
+
+    it "associates the device with the current player" do
+      post "/api/devices", params: valid_parameters, headers: valid_authed_headers
+
+      expect(device.player).to eq player
+    end
+
+    it "returns a json representation of a device" do
+      post "/api/devices", params: valid_parameters, headers: valid_authed_headers
+
+      expect(json_response[:data][:type]).to eq "device"
+      expect(json_response[:data][:id]).to eq device.id.to_s
+    end
   end
 end

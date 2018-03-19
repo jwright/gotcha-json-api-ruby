@@ -1,9 +1,9 @@
 class API::DevicesController < ApplicationController
   def create
-    Device.create! device_params.merge(player_id: current_user.id,
-                                       registered_at: DateTime.now)
+    device = Device.create! device_params.merge(player_id: current_user.id,
+                                                registered_at: DateTime.now)
 
-    head :created
+    render json: DeviceSerializer.new(device).serialized_json, status: :created
   end
 
   private
