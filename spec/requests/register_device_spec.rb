@@ -43,4 +43,67 @@ RSpec.describe "POST /api/devices" do
       expect(json_response[:data][:id]).to eq device.id.to_s
     end
   end
+
+  context "with an incorrect json payload" do
+    let(:parameters) do
+      {
+        data: {
+          type: "device",
+          token: token
+        }
+      }.to_json
+    end
+
+    it "returns a bad request status" do
+      post "/api/devices", params: parameters, headers: valid_authed_headers
+
+      expect(response).to be_bad_request
+      expect(json_response[:errors]).to \
+        eq ["param is missing or the value is empty: attributes"]
+    end
+  end
+
+  context "with an invalid attribute" do
+    let(:parameters) do
+      {
+        data: {
+          type: "device",
+          attributes: {
+            token: "",
+          }
+        }
+      }.to_json
+    end
+
+    it "returns an unprocessable entity status" do
+      post "/api/devices", params: parameters, headers: valid_authed_headers
+
+      expect(response.status).to eq 422
+      expect(json_response[:errors]).to include "Token can't be blank"
+    end
+
+    it "does not create the device" do
+      expect { post "/api/devices", params: parameters,
+                                    headers: valid_authed_headers }.to_not \
+        change { Device.count }
+    end
+  end
+
+  it_behaves_like "an authenticated request" do
+    let(:make_request) do
+      -> (headers) do
+        post "/api/devices", params: valid_parameters,
+                             headers: valid_headers.merge(headers)
+      end
+    end
+  end
+
+  it_behaves_like "a request responding to correct headers" do
+    let(:make_request) do
+      -> (headers) do
+        post "/api/devices", params: valid_parameters,
+                             headers: valid_authed_headers.merge(headers)
+      end
+    end
+  end
 end
