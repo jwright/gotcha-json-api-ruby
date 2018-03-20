@@ -9,6 +9,9 @@ class API::DevicesController < ApplicationController
   end
 
   def destroy
+    device = Device.find_by_token! params[:id]
+    device.destroy
+
     head :no_content
   end
 
