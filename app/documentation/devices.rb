@@ -55,6 +55,44 @@ module Documentation
               end
             end
           end
+
+          operation :delete do
+            key :summary, "Unregisters a device"
+            key :description, "Unregisters a device so it can no longer receive "\
+                              "notifications"
+            key :tags, ["DEVICES"]
+            security do
+              key :Bearer, []
+            end
+            parameter do
+              key :name, :token
+              key :type, :string
+              key :in, :query
+              key :description, "The device token that should be unregistered"
+              key :required, true
+            end
+            response 204 do
+              key :description, "No content"
+            end
+            response 401 do
+              key :description, "Unauthorized"
+              schema do
+                key :type, :string
+              end
+              example name: JSONAPI::MEDIA_TYPE do
+                key :errors, "Unauthorized"
+              end
+            end
+            response 404 do
+              key :description, "Not found"
+              schema do
+                key :type, :string
+              end
+              example name: JSONAPI::MEDIA_TYPE do
+                key :errors, "Not found"
+              end
+            end
+          end
         end
 
         swagger_schema :Device do
