@@ -20,6 +20,7 @@ RSpec.describe DeviceSerializer do
       expect(hash[:attributes].keys).to \
         match_array [:registered_at, :token]
       expect(hash[:attributes][:token]).to eq device.token
+      expect(hash[:attributes][:registered_at]).to be_a Integer
     end
 
     it "serializes the relationships" do
