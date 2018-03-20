@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180319230523) do
+ActiveRecord::Schema.define(version: 20180320022127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,20 @@ ActiveRecord::Schema.define(version: 20180319230523) do
     t.index ["player_id"], name: "index_devices_on_player_id"
   end
 
+  create_table "matches", force: :cascade do |t|
+    t.bigint "seeker_id"
+    t.bigint "opponent_id"
+    t.datetime "matched_at"
+    t.bigint "arena_id"
+    t.datetime "found_at"
+    t.datetime "ignored_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["arena_id"], name: "index_matches_on_arena_id"
+    t.index ["opponent_id"], name: "index_matches_on_opponent_id"
+    t.index ["seeker_id"], name: "index_matches_on_seeker_id"
+  end
+
   create_table "player_arenas", force: :cascade do |t|
     t.bigint "player_id"
     t.bigint "arena_id"
@@ -59,6 +73,9 @@ ActiveRecord::Schema.define(version: 20180319230523) do
   end
 
   add_foreign_key "devices", "players"
+  add_foreign_key "matches", "arenas"
+  add_foreign_key "matches", "players", column: "opponent_id"
+  add_foreign_key "matches", "players", column: "seeker_id"
   add_foreign_key "player_arenas", "arenas"
   add_foreign_key "player_arenas", "players"
 end
