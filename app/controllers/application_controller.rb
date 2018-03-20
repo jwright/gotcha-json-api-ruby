@@ -66,7 +66,7 @@ class ApplicationController < ActionController::API
     # This is needed because Rails returns a :bad_request (400) instead
     # of a :unsupported_media_type (415) for invalid content-type headers
     # There is a PR to fix this: https://github.com/rails/rails/pull/26632
-    if request.post? || request.put? || request.patch?
+    if request.post? || request.put? || request.patch? || request.delete?
       unless request.content_type == JSONAPI::MEDIA_TYPE
         raise JSONAPI::UnsupportedMediaTypeError.new(request.content_type)
       end

@@ -26,4 +26,20 @@ RSpec.describe "DELETE /api/devices/:token" do
       expect(response).to be_not_found
     end
   end
+
+  it_behaves_like "an authenticated request" do
+    let(:make_request) do
+      -> (headers) do
+        delete "/api/devices/#{token}", headers: valid_headers.merge(headers)
+      end
+    end
+  end
+
+  it_behaves_like "a request responding to correct headers" do
+    let(:make_request) do
+      -> (headers) do
+        delete "/api/devices/#{token}", headers: valid_authed_headers.merge(headers)
+      end
+    end
+  end
 end
