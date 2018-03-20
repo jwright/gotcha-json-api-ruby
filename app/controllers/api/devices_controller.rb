@@ -8,6 +8,13 @@ class API::DevicesController < ApplicationController
     render json: DeviceSerializer.new(device).serialized_json, status: :created
   end
 
+  def destroy
+    device = Device.find_by_token! params[:id]
+    device.destroy
+
+    head :no_content
+  end
+
   private
 
   def device_params
