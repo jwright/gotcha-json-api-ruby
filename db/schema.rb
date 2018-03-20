@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180219164434) do
+ActiveRecord::Schema.define(version: 20180319230523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,15 @@ ActiveRecord::Schema.define(version: 20180219164434) do
     t.float "longitude"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "devices", force: :cascade do |t|
+    t.bigint "player_id"
+    t.string "token"
+    t.datetime "registered_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_id"], name: "index_devices_on_player_id"
   end
 
   create_table "player_arenas", force: :cascade do |t|
@@ -49,6 +58,7 @@ ActiveRecord::Schema.define(version: 20180219164434) do
     t.string "name", null: false
   end
 
+  add_foreign_key "devices", "players"
   add_foreign_key "player_arenas", "arenas"
   add_foreign_key "player_arenas", "players"
 end
