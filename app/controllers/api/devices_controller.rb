@@ -8,6 +8,10 @@ class API::DevicesController < ApplicationController
     render json: DeviceSerializer.new(device).serialized_json, status: :created
   end
 
+  def destroy
+    head :no_content
+  end
+
   private
 
   def device_params
