@@ -4,6 +4,12 @@ require "token_generator"
 class Player < ApplicationRecord
   attr_accessor :password
 
+  has_many :player_arenas, dependent: :destroy
+  has_many :arenas, through: :player_arenas
+
+  scope :in, ->(arena) { joins(:player_arenas)
+                          .where(player_arenas: { arena_id: arena.id }) }
+
   before_validation :encrypt_password, if: proc { |p| p.password }
   after_save :clear_virtual_password
 

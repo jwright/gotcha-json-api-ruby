@@ -52,6 +52,25 @@ RSpec.describe Player do
     end
   end
 
+  describe ".in" do
+    let(:arena_one) { create :arena }
+    let(:arena_two) { create :arena }
+    let!(:player_one) { create :player, arenas: [arena_one, arena_two] }
+    let!(:player_two) { create :player, arenas: [arena_one] }
+
+    it "returns all the players who are assigned to the specified arena" do
+      result = described_class.in(arena_one)
+
+      expect(result).to match_array [player_one, player_two]
+    end
+
+    it "does not include players who are not assigned to the specified arena" do
+      result = described_class.in(arena_two)
+
+      expect(result).to match_array [player_one]
+    end
+  end
+
   describe "#password" do
     subject { build :player }
 
