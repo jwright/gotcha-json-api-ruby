@@ -18,6 +18,11 @@ class Player < ApplicationRecord
     joins(:player_arenas).where(player_arenas: { arena_id: arena })
   end
 
+  scope :not_already_matched_with, ->(player) do
+    already_matched_with_players = already_matched_with(player).pluck(:id)
+    where.not(id: already_matched_with_players).where.not(id: player)
+  end
+
   scope :unmatched, -> do
     players_in_open_matches = Match.open.pluck(:seeker_id, :opponent_id).flatten
     where.not(id: players_in_open_matches)

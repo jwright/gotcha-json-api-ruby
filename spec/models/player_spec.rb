@@ -105,9 +105,16 @@ RSpec.describe Player do
     let!(:unmatched_player) { create :player, name: "Unmatched" }
 
     describe ".already_matched_with" do
-      it "does not return players that were already in matches together" do
+      it "returns players that were already in matches together" do
         expect(described_class.already_matched_with(seeker)).to \
           match_array [found_player, ignored_player, opponent]
+      end
+    end
+
+    describe ".not_already_matched_with" do
+      it "does not return players that were already in matches together" do
+        expect(described_class.not_already_matched_with(seeker)).to \
+          match_array [unmatched_player]
       end
     end
 
