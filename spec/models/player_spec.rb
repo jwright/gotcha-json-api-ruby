@@ -90,7 +90,7 @@ RSpec.describe Player do
     end
   end
 
-  describe ".unmatched" do
+  context "with players in matches" do
     let!(:found_match) do
       create :match, :found, seeker: seeker, opponent: found_player
     end
@@ -104,11 +104,18 @@ RSpec.describe Player do
     let(:seeker) { create :player, name: "Seeker" }
     let!(:unmatched_player) { create :player, name: "Unmatched" }
 
-    it "returns players that are not in matches, already found, or ignored" do
-      result = described_class.unmatched
+    describe ".already_matched_with" do
+      it "does not return players that were already in matches together" do
+        expect(described_class.already_matched_with(seeker)).to \
+          match_array [found_player, ignored_player, opponent]
+      end
+    end
 
-      expect(result).to \
-        match_array [unmatched_player, found_player, ignored_player]
+    describe ".unmatched" do
+      it "returns players that are not in matches, already found, or ignored" do
+        expect(described_class.unmatched).to \
+          match_array [unmatched_player, found_player, ignored_player]
+      end
     end
   end
 

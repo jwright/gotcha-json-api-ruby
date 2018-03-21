@@ -7,8 +7,15 @@ class Player < ApplicationRecord
   has_many :player_arenas, dependent: :destroy
   has_many :arenas, through: :player_arenas
 
+  scope :already_matched_with, ->(player) do
+    players_in_common_matches = Match.where(seeker_id: player)
+      .or(Match.where(opponent_id: player))
+      .pluck(:seeker_id, :opponent_id).flatten
+    where(id: players_in_common_matches).where.not(id: player)
+  end
+
   scope :in, ->(arena) do
-    joins(:player_arenas).where(player_arenas: { arena_id: arena.id })
+    joins(:player_arenas).where(player_arenas: { arena_id: arena })
   end
 
   scope :unmatched, -> do
