@@ -7,8 +7,14 @@ class Player < ApplicationRecord
   has_many :player_arenas, dependent: :destroy
   has_many :arenas, through: :player_arenas
 
-  scope :in, ->(arena) { joins(:player_arenas)
-                          .where(player_arenas: { arena_id: arena.id }) }
+  scope :in, ->(arena) do
+    joins(:player_arenas).where(player_arenas: { arena_id: arena.id })
+  end
+
+  scope :unmatched, -> do
+    players_in_open_matches = Match.open.pluck(:seeker_id, :opponent_id).flatten
+    where.not(id: players_in_open_matches)
+  end
 
   before_validation :encrypt_password, if: proc { |p| p.password }
   after_save :clear_virtual_password

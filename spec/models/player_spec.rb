@@ -90,6 +90,28 @@ RSpec.describe Player do
     end
   end
 
+  describe ".unmatched" do
+    let!(:found_match) do
+      create :match, :found, seeker: seeker, opponent: found_player
+    end
+    let(:found_player) { create :player, name: "Found" }
+    let!(:ignored_match) do
+      create :match, :ignored, seeker: seeker, opponent: ignored_player
+    end
+    let(:ignored_player) { create :player, name: "Ignored" }
+    let!(:open_match) { create :match, opponent: opponent, seeker: seeker }
+    let(:opponent) { create :player, name: "Opponent" }
+    let(:seeker) { create :player, name: "Seeker" }
+    let!(:unmatched_player) { create :player, name: "Unmatched" }
+
+    it "returns players that are not in matches, already found, or ignored" do
+      result = described_class.unmatched
+
+      expect(result).to \
+        match_array [unmatched_player, found_player, ignored_player]
+    end
+  end
+
   describe ".with_api_key" do
     subject { create :player, :authorized }
 
