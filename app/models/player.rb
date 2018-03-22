@@ -7,9 +7,9 @@ class Player < ApplicationRecord
   has_many :player_arenas, dependent: :destroy
   has_many :arenas, through: :player_arenas
 
-  scope :already_matched_with, ->(player) do
-    players_in_common_matches = Match.where(seeker_id: player)
-      .or(Match.where(opponent_id: player))
+  scope :already_matched_with, ->(player, arena) do
+    players_in_common_matches = Match.in(arena).where(seeker_id: player)
+      .or(Match.in(arena).where(opponent_id: player))
       .pluck(:seeker_id, :opponent_id).flatten
     where(id: players_in_common_matches).where.not(id: player)
   end
@@ -18,8 +18,8 @@ class Player < ApplicationRecord
     joins(:player_arenas).where(player_arenas: { arena_id: arena })
   end
 
-  scope :not_already_matched_with, ->(player) do
-    already_matched_with_players = already_matched_with(player).pluck(:id)
+  scope :not_already_matched_with, ->(player, arena) do
+    already_matched_with_players = already_matched_with(player, arena).pluck(:id)
     where.not(id: already_matched_with_players).where.not(id: player)
   end
 

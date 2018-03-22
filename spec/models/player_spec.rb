@@ -91,29 +91,33 @@ RSpec.describe Player do
   end
 
   context "with players in matches" do
+    let(:arena) { create :arena }
+    let!(:another_arena_match) do
+      create :match, seeker: seeker, opponent: opponent
+    end
     let!(:found_match) do
-      create :match, :found, seeker: seeker, opponent: found_player
+      create :match, :found, arena: arena, seeker: seeker, opponent: found_player
     end
-    let(:found_player) { create :player, name: "Found" }
+    let(:found_player) { create :player, name: "Found", arenas: [arena] }
     let!(:ignored_match) do
-      create :match, :ignored, seeker: seeker, opponent: ignored_player
+      create :match, :ignored, arena: arena, seeker: seeker, opponent: ignored_player
     end
-    let(:ignored_player) { create :player, name: "Ignored" }
-    let!(:open_match) { create :match, opponent: opponent, seeker: seeker }
-    let(:opponent) { create :player, name: "Opponent" }
-    let(:seeker) { create :player, name: "Seeker" }
-    let!(:unmatched_player) { create :player, name: "Unmatched" }
+    let(:ignored_player) { create :player, name: "Ignored", arenas: [arena] }
+    let!(:open_match) { create :match, arena: arena, opponent: opponent, seeker: seeker }
+    let(:opponent) { create :player, name: "Opponent", arenas: [arena] }
+    let(:seeker) { create :player, name: "Seeker", arenas: [arena] }
+    let!(:unmatched_player) { create :player, name: "Unmatched", arenas: [arena] }
 
     describe ".already_matched_with" do
       it "returns players that were already in matches together" do
-        expect(described_class.already_matched_with(seeker)).to \
+        expect(described_class.already_matched_with(seeker, arena)).to \
           match_array [found_player, ignored_player, opponent]
       end
     end
 
     describe ".not_already_matched_with" do
       it "does not return players that were already in matches together" do
-        expect(described_class.not_already_matched_with(seeker)).to \
+        expect(described_class.not_already_matched_with(seeker, arena)).to \
           match_array [unmatched_player]
       end
     end
