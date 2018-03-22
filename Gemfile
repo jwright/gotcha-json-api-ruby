@@ -15,6 +15,7 @@ gem "rack-cors"
 gem "bcrypt"
 gem "fast_jsonapi"
 gem "geocoder"
+gem "sidekiq"
 gem "swagger-blocks"
 
 group :development, :test do
