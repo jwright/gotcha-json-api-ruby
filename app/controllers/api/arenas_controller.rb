@@ -19,6 +19,8 @@ class API::ArenasController < ApplicationController
       status = :ok
     end
 
+    MakeMatchJob.perform_later player_arena.player_id, player_arena.arena_id
+
     render json: PlayerArenaSerializer.new(player_arena).serialized_json,
            status: status
   end
