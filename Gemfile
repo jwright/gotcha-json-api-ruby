@@ -14,6 +14,7 @@ gem "rack-cors"
 
 gem "bcrypt"
 gem "fast_jsonapi"
+gem "houston"
 gem "geocoder"
 gem "sidekiq"
 gem "swagger-blocks"

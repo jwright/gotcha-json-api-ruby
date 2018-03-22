@@ -44,6 +44,8 @@ GEM
     bcrypt (3.1.11)
     builder (3.2.3)
     byebug (10.0.0)
+    commander (4.4.4)
+      highline (~> 1.7.2)
     concurrent-ruby (1.0.5)
     connection_pool (2.2.1)
     crack (0.4.3)
@@ -66,8 +68,13 @@ GEM
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     hashdiff (0.3.4)
+    highline (1.7.10)
+    houston (2.2.4)
+      commander (~> 4.4)
+      json
     i18n (0.9.3)
       concurrent-ruby (~> 1.0)
+    json (2.1.0)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -181,6 +188,7 @@ DEPENDENCIES
   factory_bot_rails
   fast_jsonapi
   geocoder
+  houston
   listen (>= 3.0.5, < 3.2)
   pg (~> 0.18)
   puma (~> 3.7)
