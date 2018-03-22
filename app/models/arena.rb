@@ -1,6 +1,9 @@
 class Arena < ApplicationRecord
   geocoded_by :address
 
+  has_many :player_arenas, dependent: :destroy
+  has_many :players, through: :player_arenas
+
   after_validation :geocode, if: :address_changed?
 
   def address
