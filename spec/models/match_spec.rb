@@ -17,6 +17,25 @@ RSpec.describe Match do
     end
   end
 
+  describe ".in" do
+    let(:arena_one) { create :arena }
+    let(:arena_two) { create :arena }
+    let!(:match_one) { create :match, arena: arena_one }
+    let!(:match_two) { create :match, arena: arena_two }
+
+    it "returns all the matches that are assigned to the specified arena" do
+      result = described_class.in(arena_one)
+
+      expect(result).to match_array [match_one]
+    end
+
+    it "does not include matches that are not assigned to the specified arena" do
+      result = described_class.in(arena_two)
+
+      expect(result).to match_array [match_two]
+    end
+  end
+
   describe ".open" do
     it "returns all matches that were not found or ignored" do
       expect(described_class.open).to match_array [active]

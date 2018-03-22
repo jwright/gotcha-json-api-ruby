@@ -5,5 +5,6 @@ class Match < ApplicationRecord
 
   scope :found, -> { where.not(found_at: nil) }
   scope :ignored, -> { where.not(ignored_at: nil) }
+  scope :in, ->(arena) { where(arena_id: arena) }
   scope :open, -> { where(found_at: nil, ignored_at: nil) }
 end
