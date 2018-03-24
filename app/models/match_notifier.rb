@@ -35,7 +35,7 @@ class MatchNotifier
       notification = Houston::Notification.new(device: token)
       notification.alert = "Gotcha! #{opponent.name} is out to get 'cha!"
       notification.badge = Match.for(player).open.count
-      notification.custom_data = {}
+      notification.custom_data = MatchSerializer.new(match).serializable_hash
       notification
     end
   end

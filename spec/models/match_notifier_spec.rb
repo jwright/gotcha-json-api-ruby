@@ -41,6 +41,14 @@ RSpec.describe MatchNotifier do
       subject.notify_player!(seeker)
     end
 
+    it "passes on the match data" do
+      expect_any_instance_of(Houston::Notification).to \
+        receive(:custom_data=).with(MatchSerializer.new(match).serializable_hash)
+        .and_call_original
+
+      subject.notify_player!(seeker)
+    end
+
     context "without a device token for the player" do
       it "does not create a push notification for the player" do
         expect(Houston::Notification).to_not receive(:new)
