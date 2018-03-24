@@ -41,4 +41,24 @@ RSpec.describe Match do
       expect(described_class.open).to match_array [active]
     end
   end
+
+  describe "#opponent_for" do
+    let(:opponent) { create :player }
+    let(:seeker) { create :player }
+    let(:someone) { create :player }
+
+    subject { create :match, seeker: seeker, opponent: opponent }
+
+    it "returns the seeker if the opponent is passed in" do
+      expect(subject.opponent_for(opponent)).to eq seeker
+    end
+
+    it "returns the opponent if the seeker is passed in" do
+      expect(subject.opponent_for(seeker)).to eq opponent
+    end
+
+    it "returns nil if the player is not part of the match" do
+      expect(subject.opponent_for(someone)).to be_nil
+    end
+  end
 end

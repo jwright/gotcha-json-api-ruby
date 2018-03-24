@@ -7,4 +7,9 @@ class Match < ApplicationRecord
   scope :ignored, -> { where.not(ignored_at: nil) }
   scope :in, ->(arena) { where(arena_id: arena) }
   scope :open, -> { where(found_at: nil, ignored_at: nil) }
+
+  def opponent_for(player)
+    return opponent if player == seeker
+    return seeker if player == opponent
+  end
 end
