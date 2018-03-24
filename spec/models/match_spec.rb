@@ -78,5 +78,13 @@ RSpec.describe Match do
       expect(subject).to_not be_valid
       expect(subject.errors[:matched_at]).to include "can't be blank"
     end
+
+    it "does not allow a seeker and an opponent to be the same player" do
+      subject.seeker_id = subject.opponent_id
+
+      expect(subject).to_not be_valid
+      expect(subject.errors[:seeker]).to \
+        include "cannot be in a match with themselves"
+    end
   end
 end

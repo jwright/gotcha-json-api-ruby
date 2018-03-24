@@ -12,9 +12,18 @@ class Match < ApplicationRecord
   scope :open, -> { where(found_at: nil, ignored_at: nil) }
 
   validates :matched_at, presence: true
+  validate :seeker_cannot_be_opponent
 
   def opponent_for(player)
     return opponent if player == seeker
     return seeker if player == opponent
+  end
+
+  private
+
+  def seeker_cannot_be_opponent
+    if seeker_id.to_i == opponent_id.to_i
+      errors.add(:seeker, "cannot be in a match with themselves")
+    end
   end
 end
