@@ -3,6 +3,9 @@ class Match < ApplicationRecord
   belongs_to :opponent, class_name: "Player"
   belongs_to :arena
 
+  scope :for, ->(player) do
+    where(seeker_id: player).or(where(opponent_id: player))
+  end
   scope :found, -> { where.not(found_at: nil) }
   scope :ignored, -> { where.not(ignored_at: nil) }
   scope :in, ->(arena) { where(arena_id: arena) }

@@ -1,9 +1,16 @@
 require "rails_helper"
 
 RSpec.describe Match do
-  let!(:active) { create :match }
-  let!(:found) { create :match, :found }
+  let!(:active) { create :match, seeker: player }
+  let!(:found) { create :match, :found, opponent: player }
   let!(:ignored) { create :match, :ignored }
+  let(:player) { create :player }
+
+  describe ".for" do
+    it "returns all matches for the specified player" do
+      expect(described_class.for(player)).to match_array [active, found]
+    end
+  end
 
   describe ".found" do
     it "returns all matches that were found" do
