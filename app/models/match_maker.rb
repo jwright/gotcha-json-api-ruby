@@ -7,7 +7,7 @@ class MatchMaker
                             opponent: opponent,
                             arena: arena,
                             matched_at: DateTime.now
-      MatchNotifier.notify! match
+      MatchNotifier.new(match).notify!
       match
     end
   end
