@@ -68,4 +68,15 @@ RSpec.describe Match do
       expect(subject.opponent_for(someone)).to be_nil
     end
   end
+
+  describe "validations" do
+    subject { build :match }
+
+    it "requires a timestamp for matched_at" do
+      subject.matched_at = nil
+
+      expect(subject).to_not be_valid
+      expect(subject.errors[:matched_at]).to include "can't be blank"
+    end
+  end
 end

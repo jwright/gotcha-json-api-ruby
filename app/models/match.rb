@@ -11,6 +11,8 @@ class Match < ApplicationRecord
   scope :in, ->(arena) { where(arena_id: arena) }
   scope :open, -> { where(found_at: nil, ignored_at: nil) }
 
+  validates :matched_at, presence: true
+
   def opponent_for(player)
     return opponent if player == seeker
     return seeker if player == opponent
