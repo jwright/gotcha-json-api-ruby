@@ -52,6 +52,25 @@ RSpec.describe Player do
     end
   end
 
+  describe ".in" do
+    let(:arena_one) { create :arena }
+    let(:arena_two) { create :arena }
+    let!(:player_one) { create :player, arenas: [arena_one, arena_two] }
+    let!(:player_two) { create :player, arenas: [arena_one] }
+
+    it "returns all the players who are assigned to the specified arena" do
+      result = described_class.in(arena_one)
+
+      expect(result).to match_array [player_one, player_two]
+    end
+
+    it "does not include players who are not assigned to the specified arena" do
+      result = described_class.in(arena_two)
+
+      expect(result).to match_array [player_one]
+    end
+  end
+
   describe "#password" do
     subject { build :player }
 
@@ -67,6 +86,46 @@ RSpec.describe Player do
         subject.save
 
         expect(subject.password).to be_nil
+      end
+    end
+  end
+
+  context "with players in matches" do
+    let(:arena) { create :arena }
+    let!(:another_arena_match) do
+      create :match, seeker: seeker, opponent: opponent
+    end
+    let!(:found_match) do
+      create :match, :found, arena: arena, seeker: seeker, opponent: found_player
+    end
+    let(:found_player) { create :player, name: "Found", arenas: [arena] }
+    let!(:ignored_match) do
+      create :match, :ignored, arena: arena, seeker: seeker, opponent: ignored_player
+    end
+    let(:ignored_player) { create :player, name: "Ignored", arenas: [arena] }
+    let!(:open_match) { create :match, arena: arena, opponent: opponent, seeker: seeker }
+    let(:opponent) { create :player, name: "Opponent", arenas: [arena] }
+    let(:seeker) { create :player, name: "Seeker", arenas: [arena] }
+    let!(:unmatched_player) { create :player, name: "Unmatched", arenas: [arena] }
+
+    describe ".already_matched_with" do
+      it "returns players that were already in matches together" do
+        expect(described_class.already_matched_with(seeker, arena)).to \
+          match_array [found_player, ignored_player, opponent]
+      end
+    end
+
+    describe ".not_already_matched_with" do
+      it "does not return players that were already in matches together" do
+        expect(described_class.not_already_matched_with(seeker, arena)).to \
+          match_array [unmatched_player]
+      end
+    end
+
+    describe ".unmatched" do
+      it "returns players that are not in matches, already found, or ignored" do
+        expect(described_class.unmatched).to \
+          match_array [unmatched_player, found_player, ignored_player]
       end
     end
   end

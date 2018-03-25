@@ -24,6 +24,12 @@ RSpec.describe "POST /api/arenas/:id/play" do
       expect(player_arena.arena).to eq arena
     end
 
+    it "runs a job to try and find a match for the player and arena" do
+      expect { post "/api/arenas/#{arena.id}/play", params: valid_parameters,
+               headers: valid_authed_headers }.to \
+               have_enqueued_job(MakeMatchJob).with(player.id, arena.id)
+    end
+
     it "returns a JSON representation of the player arena" do
       post "/api/arenas/#{arena.id}/play", params: valid_parameters,
                                            headers: valid_authed_headers

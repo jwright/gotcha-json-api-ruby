@@ -1,6 +1,16 @@
 require "rails_helper"
 
 RSpec.describe Device do
+  describe ".for" do
+    let!(:for_player) { create :device, player: player }
+    let!(:not_for_player) { create :device }
+    let(:player) { create :player }
+
+    it "returns the devices for the specific player" do
+      expect(described_class.for(player)).to match_array [for_player]
+    end
+  end
+
   describe "validations" do
     subject { build :device }
 
