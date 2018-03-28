@@ -1,7 +1,10 @@
 require "request_helper"
 
 RSpec.describe "POST /api/players" do
-  let(:avatar) { "THIS NEEDS TO BE A BASE64 STRING" }
+  include ImageHelper
+
+  let(:avatar) { file_fixture("led_zeppelin.jpg") }
+  let(:base64_avatar) { base64_encode avatar }
   let(:valid_parameters) do
     {
       data: {
@@ -10,7 +13,7 @@ RSpec.describe "POST /api/players" do
           name: "Jimmy Page",
           email_address: "jimmy@example.com",
           password: "p@ssword",
-          avatar: avatar
+          avatar: base64_avatar
         }
       }
     }.to_json
@@ -18,6 +21,8 @@ RSpec.describe "POST /api/players" do
 
   context "with a valid request" do
     let(:player) { Player.unscoped.last }
+
+    after { player.remove_avatar! }
 
     it "returns a created status" do
       post "/api/players", params: valid_parameters, headers: valid_headers

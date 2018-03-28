@@ -7,6 +7,8 @@ class Player < ApplicationRecord
   has_many :player_arenas, dependent: :destroy
   has_many :arenas, through: :player_arenas
 
+  mount_base64_uploader :avatar, AvatarUploader
+
   scope :already_matched_with, ->(player, arena) do
     players_in_common_matches = Match.in(arena).where(seeker_id: player)
       .or(Match.in(arena).where(opponent_id: player))

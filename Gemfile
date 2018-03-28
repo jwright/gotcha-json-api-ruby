@@ -13,6 +13,7 @@ gem "puma", "~> 3.7"
 gem "rack-cors"
 
 gem "bcrypt"
+gem "carrierwave-base64"
 gem "fast_jsonapi"
 gem "houston"
 gem "geocoder"
