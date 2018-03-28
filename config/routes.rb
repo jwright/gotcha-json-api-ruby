@@ -5,7 +5,9 @@ Rails.application.routes.draw do
     end
     resources :devices, only: [:create, :destroy]
     resources :players, only: :create
-    resources :sessions, only: :create
+    resources :sessions, only: :create do
+      delete :destroy, on: :collection
+    end
   end
 
   resources :docs, path: "/api/docs", only: :index

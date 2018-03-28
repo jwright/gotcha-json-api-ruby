@@ -1,4 +1,6 @@
 class API::SessionsController < ApplicationController
+  before_action :require_authorization, only: :destroy
+
   def create
     player = Player.authenticate(player_params[:email_address],
                                  player_params[:password])
@@ -10,6 +12,12 @@ class API::SessionsController < ApplicationController
     else
       raise JSONAPI::UnauthorizedError
     end
+  end
+
+  def destroy
+    current_user.update_attributes! api_key: nil
+
+    head :no_content
   end
 
   private
