@@ -12,6 +12,12 @@ class API::SessionsController < ApplicationController
     end
   end
 
+  def destroy
+    current_user.update_attributes! api_key: nil
+
+    head :no_content
+  end
+
   private
 
   def player_params
