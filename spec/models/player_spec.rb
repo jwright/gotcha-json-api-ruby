@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Player do
+  include ImageHelper
+
   describe ".authenticate" do
     let(:password) { "p@ssword" }
 
@@ -23,6 +25,22 @@ RSpec.describe Player do
       it "returns nil" do
         expect(described_class.authenticate(subject.email_address, "blah")).to be_nil
       end
+    end
+  end
+
+  describe "#avatar=" do
+    let(:avatar) { file_fixture("led_zeppelin.jpg") }
+    let(:base64_avatar) { base64_encode avatar }
+
+    subject { build :player }
+
+    after { subject.remove_avatar! }
+
+    it "attaches the image" do
+      subject.avatar = base64_avatar
+      subject.save
+
+      expect(subject.avatar.identifier).to eq "avatar.jpeg"
     end
   end
 
