@@ -1,4 +1,6 @@
 class API::SessionsController < ApplicationController
+  before_action :require_authorization, only: :destroy
+
   def create
     player = Player.authenticate(player_params[:email_address],
                                  player_params[:password])

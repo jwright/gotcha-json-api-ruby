@@ -17,7 +17,11 @@ RSpec.describe "DELETE /api/sessions" do
     end
   end
 
-  context "without an API key" do
-    xit "returns a not authorized status"
+  it_behaves_like "an authenticated request" do
+    let(:make_request) do
+      -> (headers) do
+        delete "/api/sessions", headers: valid_authed_headers.merge(headers)
+      end
+    end
   end
 end
