@@ -44,6 +44,7 @@ GEM
     bcrypt (3.1.11)
     builder (3.2.3)
     byebug (10.0.0)
+    cancancan (1.16.0)
     carrierwave (1.2.2)
       activemodel (>= 4.0.0)
       activesupport (>= 4.0.0)
@@ -217,6 +218,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt
   byebug
+  cancancan
   carrierwave-base64
   dotenv-rails
   factory_bot_rails
