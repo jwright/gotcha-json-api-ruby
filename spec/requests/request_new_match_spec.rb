@@ -15,10 +15,23 @@ RSpec.describe "POST /api/matches" do
   end
 
   context "with a valid request" do
-    it "returns a created status" do
-      post "/api/matches", params: valid_parameters, headers: valid_authed_headers
+    context "with an available opponent" do
+      let(:match) { Match.unscoped.last }
+      let!(:opponent) { create :player, arenas: [arena] }
 
-      expect(response).to be_created
+      it "returns a created status" do
+        post "/api/matches", params: valid_parameters, headers: valid_authed_headers
+
+        expect(response).to be_created
+      end
+
+      it "creates a match between the two players" do
+        post "/api/matches", params: valid_parameters, headers: valid_authed_headers
+
+        expect(match.arena).to eq arena
+        expect(match.seeker).to eq player
+        expect(match.opponent).to eq opponent
+      end
     end
   end
 end
