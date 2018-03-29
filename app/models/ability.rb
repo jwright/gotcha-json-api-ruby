@@ -3,7 +3,7 @@ class Ability
 
   def initialize(player)
     if player.present?
-      can :manage, Match do |match|
+      can [:create, :read, :update], Match do |match|
         match.arena && match.arena.playable_by?(player)
       end
     end
