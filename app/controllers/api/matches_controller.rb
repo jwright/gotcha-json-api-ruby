@@ -1,9 +1,10 @@
 class API::MatchesController < ApplicationController
   def create
     arena = Arena.find match_params[:arena_id]
-    MatchMaker.match! player: current_user, arena: arena
+    match = MatchMaker.match! player: current_user, arena: arena
 
-    head :created
+    render json: MatchSerializer.new(match).serialized_json,
+           status: :created
   end
 
   private

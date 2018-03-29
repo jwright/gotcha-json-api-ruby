@@ -32,6 +32,13 @@ RSpec.describe "POST /api/matches" do
         expect(match.seeker).to eq player
         expect(match.opponent).to eq opponent
       end
+
+      it "returns the json representation of the match" do
+        post "/api/matches", params: valid_parameters, headers: valid_authed_headers
+
+        expect(json_response[:data][:type]).to eq "match"
+        expect(json_response[:data][:id]).to eq match.id.to_s
+      end
     end
   end
 end
