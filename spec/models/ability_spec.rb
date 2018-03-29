@@ -6,7 +6,7 @@ RSpec.describe Ability do
 
   subject { described_class.new(player) }
 
-  xcontext "for an arena" do
+  context "for an arena" do
     let(:arena) { create :arena }
 
     it "can read an arena the player is playing in" do
@@ -15,10 +15,25 @@ RSpec.describe Ability do
       expect(subject).to be_able_to :read, arena
     end
 
-    xit "cannot read an arena the player is not playing in"
-    xit "cannot create an arena"
-    xit "cannot update an arena"
-    xit "cannot delete an arena"
+    it "cannot read an arena the player is not playing in" do
+      expect(subject).to_not be_able_to :read, arena
+    end
+
+    it "cannot create an arena" do
+      expect(subject).to_not be_able_to :create, Arena
+    end
+
+    it "cannot update an arena" do
+      player.arenas << arena
+
+      expect(subject).to_not be_able_to :update, arena
+    end
+
+    it "cannot delete an arena" do
+      player.arenas << arena
+
+      expect(subject).to_not be_able_to :delete, arena
+    end
   end
 
   context "for a match" do
