@@ -80,4 +80,22 @@ RSpec.describe "POST /api/matches" do
       expect(json_response[:errors]).to include "Arena with id -1 not found"
     end
   end
+
+  it_behaves_like "an authenticated request" do
+    let(:make_request) do
+      -> (headers) do
+        post "/api/matches", params: valid_parameters,
+                             headers: valid_headers.merge(headers)
+      end
+    end
+  end
+
+  it_behaves_like "a request responding to correct headers" do
+    let(:make_request) do
+      -> (headers) do
+        post "/api/matches", params: valid_parameters,
+                             headers: valid_headers.merge(headers)
+      end
+    end
+  end
 end

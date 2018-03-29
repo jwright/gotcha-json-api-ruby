@@ -1,4 +1,6 @@
 class API::MatchesController < ApplicationController
+  before_action :require_authorization
+
   def create
     arena = Arena.find match_params[:arena_id]
     match = MatchMaker.match! player: current_user, arena: arena
