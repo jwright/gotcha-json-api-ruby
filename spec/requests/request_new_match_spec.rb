@@ -57,4 +57,27 @@ RSpec.describe "POST /api/matches" do
       end
     end
   end
+
+  context "with an arena that the player is not playing in" do
+  end
+
+  context "without an arena" do
+    let(:parameters) do
+      {
+        data: {
+          type: "match",
+          attributes: {
+            arena_id: -1
+          }
+        }
+      }.to_json
+    end
+
+    it "returns a not found status" do
+      post "/api/matches", params: parameters, headers: valid_authed_headers
+
+      expect(response).to be_not_found
+      expect(json_response[:errors]).to include "Arena with id -1 not found"
+    end
+  end
 end
