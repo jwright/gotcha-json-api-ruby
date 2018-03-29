@@ -26,7 +26,9 @@ RSpec.describe "POST /api/matches" do
       end
 
       it "creates a match between the two players" do
-        post "/api/matches", params: valid_parameters, headers: valid_authed_headers
+        expect { post "/api/matches", params: valid_parameters,
+                                      headers: valid_authed_headers }.to \
+          change { Match.count }.by 1
 
         expect(match.arena).to eq arena
         expect(match.seeker).to eq player
@@ -38,6 +40,20 @@ RSpec.describe "POST /api/matches" do
 
         expect(json_response[:data][:type]).to eq "match"
         expect(json_response[:data][:id]).to eq match.id.to_s
+      end
+    end
+
+    context "without an available opponent" do
+      it "returns a no content status" do
+        post "/api/matches", params: valid_parameters, headers: valid_authed_headers
+
+        expect(response).to be_no_content
+      end
+
+      it "does not create a match" do
+        expect { post "/api/matches", params: valid_parameters,
+                                      headers: valid_authed_headers }.to_not \
+          change { Match.count }
       end
     end
   end
