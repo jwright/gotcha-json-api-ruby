@@ -59,6 +59,24 @@ RSpec.describe "POST /api/matches" do
   end
 
   context "with an arena that the player is not playing in" do
+    let(:another_arena) { create :arena }
+    let(:parameters) do
+      {
+        data: {
+          type: "match",
+          attributes: {
+            arena_id: another_arena.id
+          }
+        }
+      }.to_json
+    end
+
+    it "returns a not authorized status" do
+      post "/api/matches", params: parameters, headers: valid_authed_headers
+
+      expect(response).to be_unauthorized
+      expect(json_response[:errors]).to include "Not authorized to play in that Arena"
+    end
   end
 
   context "without an arena" do

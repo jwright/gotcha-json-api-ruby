@@ -1,6 +1,7 @@
 require_relative "../documentation/root"
 
 class ApplicationController < ActionController::API
+  include CanCan::ControllerAdditions
   include Documentation::Root
 
   attr_reader :current_user
@@ -21,6 +22,10 @@ class ApplicationController < ActionController::API
 
   rescue_from ActionController::ParameterMissing do |exception|
     render_errors exception.message
+  end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    render_errors exception.message, :unauthorized
   end
 
   rescue_from JSONAPI::NotAcceptableError do |exception|

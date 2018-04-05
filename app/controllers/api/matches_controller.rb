@@ -3,6 +3,7 @@ class API::MatchesController < ApplicationController
 
   def create
     arena = Arena.find match_params[:arena_id]
+    authorize! :read, arena, message: "Not authorized to play in that Arena"
     match = MatchMaker.match! player: current_user, arena: arena
 
     if match
