@@ -14,6 +14,7 @@ gem "rack-cors"
 
 gem "bcrypt"
 gem "carrierwave-base64"
+gem "cancancan"
 gem "fast_jsonapi"
 gem "fog-aws"
 gem "houston"

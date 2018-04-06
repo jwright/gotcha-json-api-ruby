@@ -12,6 +12,10 @@ class Arena < ApplicationRecord
       .join(", ")
   end
 
+  def playable_by?(player)
+    players.include?(player)
+  end
+
   private
 
   def address_changed?

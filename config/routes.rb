@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       post :play, on: :member
     end
     resources :devices, only: [:create, :destroy]
+    resources :matches, only: :create
     resources :players, only: :create
     resources :sessions, only: :create do
       delete :destroy, on: :collection

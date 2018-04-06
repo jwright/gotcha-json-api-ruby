@@ -40,4 +40,19 @@ RSpec.describe Arena do
         eq "123 Main St., Beverly Hills, CA, 90210"
     end
   end
+
+  describe "#playable_by?" do
+    let(:player) { create :player }
+    subject { create :arena }
+
+    it "returns true if the player is playing in the arena" do
+      player.arenas << subject
+
+      expect(subject).to be_playable_by player
+    end
+
+    it "returns false if the player is not playing in the arena" do
+      expect(subject).to_not be_playable_by player
+    end
+  end
 end
