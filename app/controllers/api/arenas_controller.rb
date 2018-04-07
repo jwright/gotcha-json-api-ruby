@@ -7,6 +7,10 @@ class API::ArenasController < ApplicationController
   end
 
   def leave
+    arena = Arena.find params[:id]
+    player_arena = PlayerArena.find_by player_id: current_user.id, arena: arena
+    player_arena.destroy!
+
     head :no_content
   end
 
