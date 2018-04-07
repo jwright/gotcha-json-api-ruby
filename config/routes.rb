@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     resources :arenas, only: :index do
+      post :leave, on: :member
       post :play, on: :member
     end
     resources :devices, only: [:create, :destroy]

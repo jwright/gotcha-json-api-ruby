@@ -6,6 +6,10 @@ class API::ArenasController < ApplicationController
     render json: ArenaSerializer.new(arenas).serialized_json
   end
 
+  def leave
+    head :no_content
+  end
+
   def play
     arena = Arena.find params[:id]
 
