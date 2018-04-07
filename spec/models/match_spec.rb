@@ -18,6 +18,36 @@ RSpec.describe Match do
     end
   end
 
+  describe "#found!" do
+    subject { create :match }
+
+    it "sets the found_at timestamp" do
+      subject.found!
+
+      expect(subject.found_at).to be_within(1.second).of(DateTime.now)
+    end
+
+    it "updates the record" do
+      subject.found!
+
+      expect(subject).to_not be_changed
+    end
+  end
+
+  describe "#found?" do
+    it "returns true if the found_at timestamp is set" do
+      subject = build :match, :found
+
+      expect(subject).to be_found
+    end
+
+    it "returns false if the found_at timestamp is not set" do
+      subject = build :match
+
+      expect(subject).to_not be_found
+    end
+  end
+
   describe ".ignored" do
     it "returns all matches that were ignored" do
       expect(described_class.ignored).to match_array [ignored]

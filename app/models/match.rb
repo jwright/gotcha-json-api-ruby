@@ -14,6 +14,14 @@ class Match < ApplicationRecord
   validates :matched_at, presence: true
   validate :seeker_cannot_be_opponent
 
+  def found!
+    update_attributes found_at: DateTime.now
+  end
+
+  def found?
+    found_at.present?
+  end
+
   def opponent_for(player)
     return opponent if player == seeker
     return seeker if player == opponent
