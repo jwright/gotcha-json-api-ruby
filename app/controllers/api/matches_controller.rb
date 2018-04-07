@@ -2,6 +2,9 @@ class API::MatchesController < ApplicationController
   before_action :require_authorization
 
   def capture
+    match = Match.find params[:id]
+    match.found!
+
     head :ok
   end
 

@@ -12,5 +12,28 @@ RSpec.describe "POST /api/matches/:id/capture" do
 
       expect(response).to be_ok
     end
+
+    it "marks the match as found" do
+      post url, headers: valid_authed_headers
+
+      expect(match.reload).to be_found
+    end
+
+    xit "returns the json representation of the match" do
+    end
+  end
+
+  context "with a match that does not exist" do
+    xit "returns a not found status" do
+    end
+  end
+
+  context "with a match that is not open" do
+    xit "returns an bad request status"
+  end
+
+  context "with an arena that the player is not playing in" do
+    xit "returns a not authorized status" do
+    end
   end
 end
