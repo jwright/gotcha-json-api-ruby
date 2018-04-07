@@ -20,7 +20,7 @@ class Match < ApplicationRecord
   end
 
   def found!
-    update_attributes found_at: DateTime.now
+    update_attributes! found_at: DateTime.now
   end
 
   def found?

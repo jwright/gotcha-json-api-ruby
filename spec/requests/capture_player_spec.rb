@@ -40,7 +40,14 @@ RSpec.describe "POST /api/matches/:id/capture" do
   end
 
   context "with a match that is not open" do
-    xit "returns an unprocessable entity status"
+    let(:match) { create :match, :ignored, arena: arena, seeker: player }
+
+    it "returns an unprocessable entity status" do
+      post url, headers: valid_authed_headers
+
+      expect(response.status).to eq 422
+      expect(json_response[:errors]).to include "Match is not open"
+    end
   end
 
   context "with an arena that the player is not playing in" do
