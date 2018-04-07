@@ -2,6 +2,7 @@ require "jsonapi"
 require "swagger/blocks"
 require_relative "arenas"
 require_relative "devices"
+require_relative "matches"
 require_relative "players"
 require_relative "sessions"
 
@@ -11,6 +12,7 @@ module Documentation
       base.send :include, Swagger::Blocks
       base.send :include, Arenas
       base.send :include, Devices
+      base.send :include, Matches
       base.send :include, Players
       base.send :include, Sessions
 
@@ -46,6 +48,9 @@ module Documentation
           end
           tag name: "DEVICES" do
             key :description, "Device operations"
+          end
+          tag name: "MATCHES" do
+            key :description, "Match operations"
           end
           tag name: "PLAYERS" do
             key :description, "Player operations"
