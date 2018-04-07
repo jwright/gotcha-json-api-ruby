@@ -133,6 +133,30 @@ module Documentation
           end
         end
 
+        swagger_path "/arenas/{id}/leave" do
+          operation :post do
+            key :summary, "Remove a player from an arena"
+            key :description, "Removes a player from an arena by removing the "\
+                              "assigned player so they can no longer be found there."
+            key :tags, ["ARENAS"]
+            security do
+              key :Bearer, []
+            end
+            response 204 do
+              key :description, "No content is returned."
+            end
+            response 401 do
+              key :description, "Unauthorized"
+              schema do
+                key :type, :string
+              end
+              example name: JSONAPI::MEDIA_TYPE do
+                key :errors, "Unauthorized"
+              end
+            end
+          end
+        end
+
         swagger_schema :Arena do
           key :type, :object
           key :required, [:id,
