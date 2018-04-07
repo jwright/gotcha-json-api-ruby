@@ -29,4 +29,29 @@ RSpec.describe "POST /api/arenas/:id/leave" do
       expect(json_response[:errors]).to include "Player not found in Arena"
     end
   end
+
+  context "with an invalid arena id" do
+    it "returns a not found status" do
+      post "/api/arenas/1234/leave", headers: valid_authed_headers
+
+      expect(response).to be_not_found
+      expect(json_response[:errors]).to include "Arena with id 1234 not found"
+    end
+  end
+
+  it_behaves_like "an authenticated request" do
+    let(:make_request) do
+      -> (headers) do
+        post "/api/arenas/#{arena.id}/leave", headers: valid_headers.merge(headers)
+      end
+    end
+  end
+
+  it_behaves_like "a request responding to correct headers" do
+    let(:make_request) do
+      -> (headers) do
+        post "/api/arenas/#{arena.id}/leave", headers: valid_headers.merge(headers)
+      end
+    end
+  end
 end
