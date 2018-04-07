@@ -19,7 +19,11 @@ RSpec.describe "POST /api/matches/:id/capture" do
       expect(match.reload).to be_found
     end
 
-    xit "returns the json representation of the match" do
+    it "returns the json representation of the match" do
+      post url, headers: valid_authed_headers
+
+      expect(json_response[:data][:type]).to eq "match"
+      expect(json_response[:data][:id]).to eq match.id.to_s
     end
   end
 

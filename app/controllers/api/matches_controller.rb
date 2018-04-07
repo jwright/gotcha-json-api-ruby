@@ -5,7 +5,7 @@ class API::MatchesController < ApplicationController
     match = Match.find params[:id]
     match.found!
 
-    head :ok
+    render json: MatchSerializer.new(match).serialized_json
   end
 
   def create
