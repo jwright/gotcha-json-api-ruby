@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :arenas, only: :index do
       post :leave, on: :member
       post :play, on: :member
+      get :score, on: :member
     end
     resources :devices, only: [:create, :destroy]
     resources :matches, only: :create do

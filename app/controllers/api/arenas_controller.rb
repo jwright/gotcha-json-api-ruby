@@ -33,4 +33,8 @@ class API::ArenasController < ApplicationController
     render json: ArenaSerializer.new(arena).serialized_json,
            status: status
   end
+
+  def score
+    head :ok
+  end
 end
