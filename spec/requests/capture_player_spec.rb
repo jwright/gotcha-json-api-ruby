@@ -60,4 +60,20 @@ RSpec.describe "POST /api/matches/:id/capture" do
       expect(json_response[:errors]).to include "Not authorized to play in that Match"
     end
   end
+
+  it_behaves_like "an authenticated request" do
+    let(:make_request) do
+      -> (headers) do
+        post url, headers: valid_headers.merge(headers)
+      end
+    end
+  end
+
+  it_behaves_like "a request responding to correct headers" do
+    let(:make_request) do
+      -> (headers) do
+        post url, headers: valid_headers.merge(headers)
+      end
+    end
+  end
 end
