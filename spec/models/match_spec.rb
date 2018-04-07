@@ -54,6 +54,20 @@ RSpec.describe Match do
     end
   end
 
+  describe "#ignored?" do
+    it "returns true if the ignored_at timestamp is set" do
+      subject = build :match, :ignored
+
+      expect(subject).to be_ignored
+    end
+
+    it "returns false if the ignored_at timestamp is not set" do
+      subject = build :match
+
+      expect(subject).to_not be_ignored
+    end
+  end
+
   describe ".in" do
     let(:arena_one) { create :arena }
     let(:arena_two) { create :arena }
@@ -115,6 +129,14 @@ RSpec.describe Match do
       expect(subject).to_not be_valid
       expect(subject.errors[:seeker]).to \
         include "cannot be in a match with themselves"
+    end
+
+    it "does not allow a closed match to be modified" do
+      subject.ignored_at = DateTime.now
+      subject.found_at = DateTime.now
+
+      expect(subject).to_not be_valid
+      expect(subject.errors[:base]).to include "Match is not open"
     end
   end
 end
