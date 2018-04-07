@@ -24,7 +24,10 @@ RSpec.describe "POST /api/matches/:id/capture" do
         have_enqueued_job(MakeMatchJob).with(match.seeker_id, match.arena_id)
     end
 
-    xit "creates a new match for the opponent"
+    it "creates a new match for the opponent" do
+      expect { post url, headers: valid_authed_headers }.to \
+        have_enqueued_job(MakeMatchJob).with(match.opponent_id, match.arena_id)
+    end
 
     it "returns the json representation of the match" do
       post url, headers: valid_authed_headers

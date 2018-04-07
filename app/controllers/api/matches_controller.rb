@@ -7,6 +7,7 @@ class API::MatchesController < ApplicationController
     match.found!
 
     MakeMatchJob.perform_later match.seeker_id, match.arena_id
+    MakeMatchJob.perform_later match.opponent_id, match.arena_id
 
     render json: MatchSerializer.new(match).serialized_json
   end
