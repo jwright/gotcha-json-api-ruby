@@ -44,6 +44,16 @@ RSpec.describe "POST /api/devices" do
     end
   end
 
+  context "with a device already registered" do
+    let!(:device) { create :device, player: player, token: token }
+
+    it "returns an ok status" do
+      post "/api/devices", params: valid_parameters, headers: valid_authed_headers
+
+      expect(response).to be_ok
+    end
+  end
+
   context "with an incorrect json payload" do
     let(:parameters) do
       {
