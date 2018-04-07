@@ -1,6 +1,10 @@
 class API::MatchesController < ApplicationController
   before_action :require_authorization
 
+  def capture
+    head :ok
+  end
+
   def create
     arena = Arena.find match_params[:arena_id]
     authorize! :read, arena, message: "Not authorized to play in that Arena"
