@@ -3,6 +3,7 @@ class API::MatchesController < ApplicationController
 
   def capture
     match = Match.find params[:id]
+    authorize! :update, match, message: "Not authorized to play in that Match"
     match.found!
 
     render json: MatchSerializer.new(match).serialized_json

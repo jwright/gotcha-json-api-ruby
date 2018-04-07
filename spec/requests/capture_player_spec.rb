@@ -19,6 +19,9 @@ RSpec.describe "POST /api/matches/:id/capture" do
       expect(match.reload).to be_found
     end
 
+    xit "creates a new match for the seeker"
+    xit "creates a new match for the opponent"
+
     it "returns the json representation of the match" do
       post url, headers: valid_authed_headers
 
@@ -28,16 +31,26 @@ RSpec.describe "POST /api/matches/:id/capture" do
   end
 
   context "with a match that does not exist" do
-    xit "returns a not found status" do
+    it "returns a not found status" do
+      post "/api/matches/-1/capture", headers: valid_authed_headers
+
+      expect(response).to be_not_found
+      expect(json_response[:errors]).to include "Match with id -1 not found"
     end
   end
 
   context "with a match that is not open" do
-    xit "returns an bad request status"
+    xit "returns an unprocessable entity status"
   end
 
   context "with an arena that the player is not playing in" do
-    xit "returns a not authorized status" do
+    let(:match) { create :match }
+
+    it "returns a not authorized status" do
+      post url, headers: valid_authed_headers
+
+      expect(response).to be_unauthorized
+      expect(json_response[:errors]).to include "Not authorized to play in that Match"
     end
   end
 end
