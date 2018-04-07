@@ -25,5 +25,12 @@ RSpec.describe Score do
       expect(subject).to_not be_valid
       expect(subject.errors[:scored_at]).to include "can't be blank"
     end
+
+    it "requires the player to be in the arena" do
+      subject.arena = create :arena
+
+      expect(subject).to_not be_valid
+      expect(subject.errors[:player]).to include "cannot play in arena"
+    end
   end
 end
