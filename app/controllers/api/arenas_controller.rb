@@ -9,6 +9,7 @@ class API::ArenasController < ApplicationController
   def leave
     arena = Arena.find params[:id]
     player_arena = PlayerArena.find_by player_id: current_user.id, arena: arena
+    raise ActiveRecord::RecordNotFound, "Player not found in Arena" if player_arena.nil?
     player_arena.destroy!
 
     head :no_content
