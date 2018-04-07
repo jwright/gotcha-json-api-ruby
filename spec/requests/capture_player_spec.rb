@@ -19,7 +19,11 @@ RSpec.describe "POST /api/matches/:id/capture" do
       expect(match.reload).to be_found
     end
 
-    xit "creates a new match for the seeker"
+    it "creates a new match for the seeker" do
+      expect { post url, headers: valid_authed_headers }.to \
+        have_enqueued_job(MakeMatchJob).with(match.seeker_id, match.arena_id)
+    end
+
     xit "creates a new match for the opponent"
 
     it "returns the json representation of the match" do

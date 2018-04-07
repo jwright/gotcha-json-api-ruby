@@ -6,6 +6,8 @@ class API::MatchesController < ApplicationController
     authorize! :update, match, message: "Not authorized to play in that Match"
     match.found!
 
+    MakeMatchJob.perform_later match.seeker_id, match.arena_id
+
     render json: MatchSerializer.new(match).serialized_json
   end
 
