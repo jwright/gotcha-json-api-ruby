@@ -77,48 +77,46 @@ module Documentation
                                 "Arena attached to a player. A 200 is returned "\
                                 "if the player is already playing the arena."
               schema do
-                key :"$ref", :PlayerArena
+                key :"$ref", :Arena
               end
               example name: JSONAPI::MEDIA_TYPE do
-                key :data, [{
+                key :data, {
                   id: "12345",
-                  type: "player_arena",
+                  type: "arena",
                   attributes: {
-                    joined_at: 12345556565
-                  },
-                  relationships: {
-                    arena: {
-                      data: {
-                        type: "arena",
-                        id: "12345"
-                      }
-                    }
+                    location_name: "Staples Center",
+                    latitude: 34.0430219,
+                    longitude: -118.2694428,
+                    street_address1: "1111 S Figueroa St",
+                    street_address2: "",
+                    city: "Los Angeles",
+                    state: "CA",
+                    zip_code: "90015"
                   }
-                }]
+                }
               end
             end
             response 201 do
               key :description, "A JSON API formatted representation of a single "\
                                 "Arena attached to a player"
               schema do
-                key :"$ref", :PlayerArena
+                key :"$ref", :Arena
               end
               example name: JSONAPI::MEDIA_TYPE do
-                key :data, [{
+                key :data, {
                   id: "12345",
-                  type: "player_arena",
+                  type: "arena",
                   attributes: {
-                    joined_at: 12345556565
-                  },
-                  relationships: {
-                    arena: {
-                      data: {
-                        type: "arena",
-                        id: "12345"
-                      }
-                    }
+                    location_name: "Staples Center",
+                    latitude: 34.0430219,
+                    longitude: -118.2694428,
+                    street_address1: "1111 S Figueroa St",
+                    street_address2: "",
+                    city: "Los Angeles",
+                    state: "CA",
+                    zip_code: "90015"
                   }
-                }]
+                }
               end
             end
             response 401 do
@@ -220,51 +218,6 @@ module Documentation
                 key :type, :string
                 key :description, "The zip code of the street address for "\
                                   "the location where the Arena is located"
-              end
-            end
-          end
-        end
-
-        swagger_schema :PlayerArena do
-          key :type, :object
-          key :required, [:id,
-                          :type,
-                          :joined_at]
-          property :data do
-            key :type, :object
-            property :id do
-              key :type, :string
-              key :format, :int64
-              key :description, "Unique identifier for the object"
-            end
-            property :type do
-              key :type, :string
-              key :description, "The type of object that is represented"
-              key :enum, ["player_arena"]
-            end
-            property :attributes do
-              key :type, :object
-              property :joined_at do
-                key :type, :integer
-                key :format, :dateTime
-                key :description, "The date/time of when the player joined the "\
-                                  "arena in the number of seconds since the Epoch"
-              end
-            end
-            property :relationships do
-              key :type, :object
-              property :data do
-                key :type, :object
-                property :id do
-                  key :type, :string
-                  key :format, :int64
-                  key :description, "Unique identifier for the object"
-                end
-                property :type do
-                  key :type, :string
-                  key :description, "The type of object that is represented"
-                  key :enum, ["arena"]
-                end
               end
             end
           end
