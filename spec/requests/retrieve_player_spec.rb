@@ -10,5 +10,12 @@ RSpec.describe "GET /api/players/:id" do
 
       expect(response).to be_ok
     end
+
+    it "returns the json representation of a player" do
+      get url, headers: valid_headers
+
+      expect(json_response[:data][:type]).to eq "player"
+      expect(json_response[:data][:id]).to eq player.id.to_s
+    end
   end
 end

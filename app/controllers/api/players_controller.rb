@@ -7,7 +7,9 @@ class API::PlayersController < ApplicationController
   end
 
   def show
-    head :ok
+    player = Player.find params[:id]
+
+    render json: PlayerSerializer.new(player).serialized_json
   end
 
   private
