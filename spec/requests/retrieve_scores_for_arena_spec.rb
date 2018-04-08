@@ -35,4 +35,29 @@ RSpec.describe "GET /api/arenas/:id/scores" do
       expect(json_response[:meta][:placement]).to eq "1st"
     end
   end
+
+  context "with an invalid arena id" do
+    it "returns a not found status" do
+      get "/api/arenas/1234/scores", headers: valid_authed_headers
+
+      expect(response.status).to eq 404
+      expect(json_response[:errors]).to include "Arena with id 1234 not found"
+    end
+  end
+
+  it_behaves_like "an authenticated request" do
+    let(:make_request) do
+      -> (headers) do
+        get url, headers: valid_headers.merge(headers)
+      end
+    end
+  end
+
+  it_behaves_like "a request responding to correct headers" do
+    let(:make_request) do
+      -> (headers) do
+        get url, headers: valid_authed_headers.merge(headers)
+      end
+    end
+  end
 end
