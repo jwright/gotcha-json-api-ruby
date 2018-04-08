@@ -1,4 +1,6 @@
 class API::PlayersController < ApplicationController
+  before_action :require_authorization, except: :create
+
   def create
     player = Player.create! player_params.merge(api_key: TokenGenerator.generate)
 
@@ -9,7 +11,10 @@ class API::PlayersController < ApplicationController
   def show
     player = Player.find params[:id]
 
-    render json: PlayerSerializer.new(player).serialized_json
+    hash = PlayerSerializer.new(player).serializable_hash
+    hash[:data][:attributes].delete(:api_key)
+
+    render json: PlayerSerializer.to_json(hash)
   end
 
   private
