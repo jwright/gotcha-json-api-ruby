@@ -28,5 +28,11 @@ RSpec.describe "GET /api/arenas/:id/scores" do
 
       expect(json_response[:meta][:total_points]).to eq 2
     end
+
+    it "includes the meta-data for the placement in the arena" do
+      get url, headers: valid_authed_headers
+
+      expect(json_response[:meta][:placement]).to eq "1st"
+    end
   end
 end
