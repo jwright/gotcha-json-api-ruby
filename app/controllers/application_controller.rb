@@ -11,7 +11,7 @@ class ApplicationController < ActionController::API
                 :set_current_user
 
   rescue_from ActiveRecord::RecordInvalid do |exception|
-    render_errors exception.record.errors.full_messages, :unprocessable_entity
+    render_simple_errors exception.record.errors.full_messages, :unprocessable_entity
   end
 
   rescue_from ActiveRecord::RecordNotFound do |exception|
@@ -21,32 +21,32 @@ class ApplicationController < ActionController::API
     else
       exception = exception.message
     end
-    render_errors exception, :not_found
+    render_simple_errors exception, :not_found
   end
 
   rescue_from ActionController::ParameterMissing do |exception|
-    render_errors exception.message
+    render_simple_errors exception.message
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    render_errors exception.message, :unauthorized
+    render_simple_errors exception.message, :unauthorized
   end
 
   rescue_from JSONAPI::NotAcceptableError do |exception|
-    render_errors exception.message, :not_acceptable
+    render_simple_errors exception.message, :not_acceptable
   end
 
   rescue_from JSONAPI::UnauthorizedError do |exception|
-    render_errors exception.message, :unauthorized
+    render_simple_errors exception.message, :unauthorized
   end
 
   rescue_from JSONAPI::UnsupportedMediaTypeError do |exception|
-    render_errors exception.message, :unsupported_media_type
+    render_simple_errors exception.message, :unsupported_media_type
   end
 
   protected
 
-  def render_errors(messages, status=:bad_request)
+  def render_simple_errors(messages, status=:bad_request)
     errors = [messages].flatten
 
     render json: { errors: errors }, status: status

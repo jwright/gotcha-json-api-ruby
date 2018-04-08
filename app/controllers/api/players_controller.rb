@@ -1,4 +1,6 @@
 class API::PlayersController < ApplicationController
+  include JSONAPI::ActsAsResourceController
+
   before_action :require_authorization, except: :create
 
   def create

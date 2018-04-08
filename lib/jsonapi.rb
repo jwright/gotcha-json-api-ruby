@@ -1,6 +1,4 @@
 module JSONAPI
-  MEDIA_TYPE = "application/vnd.api+json"
-
   class NotAcceptableError < RuntimeError
     attr_reader :media_type
 
