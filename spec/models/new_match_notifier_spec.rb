@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe MatchNotifier do
+RSpec.describe NewMatchNotifier do
   let(:match) { create :match, seeker: seeker, opponent: opponent }
   let(:opponent) { create :player, name: "Robert Plant" }
   let(:seeker) { create :player, name: "Jimmy Page" }

@@ -6,7 +6,7 @@ RSpec.describe MatchMaker do
     let!(:player_one) { create :player, arenas: [arena] }
     let!(:player_two) { create :player, arenas: [arena] }
 
-    before { allow_any_instance_of(MatchNotifier).to receive(:notify!) }
+    before { allow_any_instance_of(NewMatchNotifier).to receive(:notify!) }
 
     context "with two unmatched players in the same arena" do
       it "creates a new match between the two players" do
@@ -19,9 +19,9 @@ RSpec.describe MatchMaker do
       end
 
       it "notifies the players of the match" do
-        expect(MatchNotifier).to \
+        expect(NewMatchNotifier).to \
           receive(:new).with(an_instance_of(Match)).and_call_original
-        expect_any_instance_of(MatchNotifier).to receive(:notify!)
+        expect_any_instance_of(NewMatchNotifier).to receive(:notify!)
 
         described_class.match! player: player_two, arena: arena
       end

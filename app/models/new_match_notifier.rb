@@ -1,6 +1,6 @@
 require "houston"
 
-class MatchNotifier
+class NewMatchNotifier
   attr_reader :match
 
   def initialize(match)
