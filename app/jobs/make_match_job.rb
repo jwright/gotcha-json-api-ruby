@@ -11,6 +11,8 @@ class MakeMatchJob < ApplicationJob
     player = Player.find player_id
     arena = Arena.find arena_id
 
+    return if player.matched_in?(arena)
+
     match = MatchMaker.match! player: player, arena: arena
     raise MatchNotFoundError if match.nil?
   rescue ActiveRecord::RecordNotFound => e
