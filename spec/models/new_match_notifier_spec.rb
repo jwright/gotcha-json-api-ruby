@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe MatchNotifier do
+RSpec.describe NewMatchNotifier do
   let(:match) { create :match, seeker: seeker, opponent: opponent }
   let(:opponent) { create :player, name: "Robert Plant" }
   let(:seeker) { create :player, name: "Jimmy Page" }
@@ -28,6 +28,13 @@ RSpec.describe MatchNotifier do
       expect_any_instance_of(Houston::Notification).to \
         receive(:alert=).with("Gotcha! Robert Plant is out to get 'cha!")
         .and_call_original
+
+      subject.notify_player!(seeker)
+    end
+
+    it "sends the appropriate category" do
+      expect_any_instance_of(Houston::Notification).to \
+        receive(:category=).with(:new_match).and_call_original
 
       subject.notify_player!(seeker)
     end

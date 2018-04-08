@@ -1,6 +1,6 @@
 require "houston"
 
-class MatchNotifier
+class NewMatchNotifier
   attr_reader :match
 
   def initialize(match)
@@ -34,6 +34,7 @@ class MatchNotifier
     if opponent = match.opponent_for(player)
       notification = Houston::Notification.new(device: token)
       notification.alert = "Gotcha! #{opponent.name} is out to get 'cha!"
+      notification.category = :new_match
       notification.badge = Match.for(player).open.count
       notification.custom_data = MatchSerializer.new(match).serializable_hash
       notification
