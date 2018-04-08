@@ -105,6 +105,12 @@ RSpec.describe Player do
       expect(subject).to be_matched_in arena
     end
 
+    it "returns false if the match is not open" do
+      create :match, :found, opponent: subject, arena: arena
+
+      expect(subject).to_not be_matched_in arena
+    end
+
     it "returns false if the player is a seeker in a match in another arena" do
       create :match, opponent: subject
 
