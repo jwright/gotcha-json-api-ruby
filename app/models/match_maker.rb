@@ -1,6 +1,6 @@
 class MatchMaker
   def self.match!(player:, arena:)
-    return nil if player.matched_in?(arena)
+    return nil if player.openly_matched_in?(arena)
 
     opponent = Player.in(arena).unmatched.not_already_matched_with(player, arena).sample
 

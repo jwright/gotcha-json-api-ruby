@@ -10,6 +10,14 @@ class Ability
       can [:create, :read, :update], Match do |match|
         match.arena && match.arena.playable_by?(player)
       end
+
+      can :manage, Player do |someone_else|
+        someone_else == player
+      end
+
+      can :read, Player do |someone_else|
+        player.matched_with?(someone_else)
+      end
     end
   end
 end
