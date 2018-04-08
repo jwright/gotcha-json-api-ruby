@@ -6,6 +6,10 @@ class API::PlayersController < ApplicationController
            status: :created
   end
 
+  def show
+    head :ok
+  end
+
   private
 
   def player_params

@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     resources :matches, only: :create do
       post :capture, on: :member
     end
-    resources :players, only: :create
+    resources :players, only: [:create, :show]
     resources :sessions, only: :create do
       delete :destroy, on: :collection
     end
