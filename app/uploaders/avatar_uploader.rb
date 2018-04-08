@@ -4,7 +4,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   end
 
   def size_range
-    1..1.megabyte
+    1..2.megabyte
   end
 
   def store_dir
