@@ -60,4 +60,18 @@ RSpec.describe Ability do
       expect(subject).to_not be_able_to :read, match
     end
   end
+
+  context "for an player" do
+    let(:someone_else) { create :player }
+
+    it "can manage their own player" do
+      expect(subject).to be_able_to :manage, player
+    end
+
+    it "can read a player they have been matched up with" do
+      create :match, seeker: player, opponent: someone_else
+
+      expect(subject).to be_able_to :read, someone_else
+    end
+  end
 end
