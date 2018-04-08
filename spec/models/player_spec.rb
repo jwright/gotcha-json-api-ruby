@@ -89,6 +89,27 @@ RSpec.describe Player do
     end
   end
 
+  describe "#matched_with?" do
+    let(:someone_else) { create :player }
+    subject { create :player }
+
+    it "returns true if the player is a seeker in any match with the player" do
+      create :match, seeker: subject, opponent: someone_else
+
+      expect(subject).to be_matched_with someone_else
+    end
+
+    it "returns true if the player is an opponent in any match with the player" do
+      create :match, seeker: someone_else, opponent: subject
+
+      expect(subject).to be_matched_with someone_else
+    end
+
+    it "returns false if the player was never matched" do
+      expect(subject).to_not be_matched_with someone_else
+    end
+  end
+
   describe "#openly_matched_in?" do
     let(:arena) { create :arena }
     subject { create :player, arenas: [arena] }
