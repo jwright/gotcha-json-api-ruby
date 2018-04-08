@@ -34,7 +34,10 @@ class API::ArenasController < ApplicationController
            status: status
   end
 
-  def score
-    head :ok
+  def scores
+    arena = Arena.find params[:id]
+    scores = Score.for(current_user).in(arena)
+
+    render json: ScoreSerializer.new(scores).serialized_json
   end
 end
