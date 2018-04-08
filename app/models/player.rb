@@ -61,7 +61,7 @@ class Player < ApplicationRecord
     update_attributes(api_key: TokenGenerator.generate)
   end
 
-  def matched_in?(arena)
+  def openly_matched_in?(arena)
     Match.in(arena).open.where(seeker_id: id)
       .or(Match.in(arena).open.where(opponent_id: id))
       .exists?

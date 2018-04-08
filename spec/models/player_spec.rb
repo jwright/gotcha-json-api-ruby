@@ -89,32 +89,32 @@ RSpec.describe Player do
     end
   end
 
-  describe "#matched_in?" do
+  describe "#openly_matched_in?" do
     let(:arena) { create :arena }
     subject { create :player, arenas: [arena] }
 
     it "returns true if the player is a seeker in a match in the arena" do
       create :match, seeker: subject, arena: arena
 
-      expect(subject).to be_matched_in arena
+      expect(subject).to be_openly_matched_in arena
     end
 
     it "returns true if the player is an opponent in a match in the arena" do
       create :match, opponent: subject, arena: arena
 
-      expect(subject).to be_matched_in arena
+      expect(subject).to be_openly_matched_in arena
     end
 
     it "returns false if the match is not open" do
       create :match, :found, opponent: subject, arena: arena
 
-      expect(subject).to_not be_matched_in arena
+      expect(subject).to_not be_openly_matched_in arena
     end
 
     it "returns false if the player is a seeker in a match in another arena" do
       create :match, opponent: subject
 
-      expect(subject).to_not be_matched_in arena
+      expect(subject).to_not be_openly_matched_in arena
     end
   end
 
