@@ -26,6 +26,16 @@ RSpec.describe Score do
     end
   end
 
+  describe ".in" do
+    let(:arena) { create :arena }
+    let!(:score1) { create :score, arena: arena }
+    let!(:score2) { create :score }
+
+    it "returns all scores that are in a specific arena" do
+      expect(described_class.in(arena)).to match_array [score1]
+    end
+  end
+
   describe "validations" do
     subject { build :score }
 
