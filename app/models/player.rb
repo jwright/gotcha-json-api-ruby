@@ -4,6 +4,7 @@ require "token_generator"
 class Player < ApplicationRecord
   attr_accessor :password
 
+  has_many :devices, dependent: :destroy
   has_many :player_arenas, dependent: :destroy
   has_many :arenas, through: :player_arenas
 
