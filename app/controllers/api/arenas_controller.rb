@@ -33,4 +33,13 @@ class API::ArenasController < ApplicationController
     render json: ArenaSerializer.new(arena).serialized_json,
            status: status
   end
+
+  def scores
+    arena = Arena.find params[:id]
+    scores = Score.for(current_user).in(arena)
+
+    placement = Placement.new(arena).ordinal_for(current_user)
+    options = { meta: { total_points: scores.sum(&:points), placement: placement }}
+    render json: ScoreSerializer.new(scores, options).serialized_json
+  end
 end
