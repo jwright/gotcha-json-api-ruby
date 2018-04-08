@@ -61,6 +61,12 @@ class Player < ApplicationRecord
     update_attributes(api_key: TokenGenerator.generate)
   end
 
+  def matched_in?(arena)
+    Match.in(arena).where(seeker_id: id)
+      .or(Match.in(arena).where(opponent_id: id))
+      .exists?
+  end
+
   private
 
   def clear_virtual_password
