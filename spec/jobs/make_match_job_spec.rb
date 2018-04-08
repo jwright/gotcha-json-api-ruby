@@ -13,7 +13,7 @@ RSpec.describe MakeMatchJob do
   end
 
   it "reschedules itself if a match was not found" do
-    create :match, arena: arena, seeker: player
+    create :match, :ignored, arena: arena, seeker: player
 
     expect_any_instance_of(described_class).to \
       receive(:retry_job).with(wait: 2.minutes)
