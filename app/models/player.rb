@@ -62,8 +62,8 @@ class Player < ApplicationRecord
   end
 
   def matched_in?(arena)
-    Match.in(arena).where(seeker_id: id)
-      .or(Match.in(arena).where(opponent_id: id))
+    Match.in(arena).open.where(seeker_id: id)
+      .or(Match.in(arena).open.where(opponent_id: id))
       .exists?
   end
 
