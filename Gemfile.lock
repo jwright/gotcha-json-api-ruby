@@ -105,6 +105,10 @@ GEM
       concurrent-ruby (~> 1.0)
     ipaddress (0.8.3)
     json (2.1.0)
+    jsonapi-resources (0.9.0)
+      activerecord (>= 4.1)
+      concurrent-ruby
+      railties (>= 4.1)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -226,6 +230,7 @@ DEPENDENCIES
   fog-aws
   geocoder
   houston
+  jsonapi-resources
   listen (>= 3.0.5, < 3.2)
   pg (~> 0.18)
   puma (~> 3.7)
@@ -243,4 +248,4 @@ RUBY VERSION
    ruby 2.4.1p111
 
 BUNDLED WITH
-   1.14.3
+   1.16.1
