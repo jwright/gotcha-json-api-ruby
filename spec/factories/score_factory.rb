@@ -7,7 +7,9 @@ FactoryBot.define do
 
     before(:create) do |score|
       if score.arena && score.player
-        score.player.arenas << score.arena
+        if !score.player.arenas.include?(score.arena)
+          score.player.arenas << score.arena
+        end
       end
     end
   end
