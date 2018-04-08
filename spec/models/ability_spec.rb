@@ -61,7 +61,7 @@ RSpec.describe Ability do
     end
   end
 
-  context "for an player" do
+  context "for a player" do
     let(:someone_else) { create :player }
 
     it "can manage their own player" do
