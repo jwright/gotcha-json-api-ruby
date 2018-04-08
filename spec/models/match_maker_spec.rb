@@ -64,5 +64,17 @@ RSpec.describe MatchMaker do
         expect(match.arena).to eq arena
       end
     end
+
+    context "with a new opponent in the same arena" do
+      let!(:player_three) { create :player, arenas: [arena] }
+
+      before do
+        create :match, arena: arena, opponent: player_one, seeker: player_two
+      end
+
+      it "does not create a new match" do
+        expect(described_class.match!(player: player_one, arena: arena)).to be_nil
+      end
+    end
   end
 end
