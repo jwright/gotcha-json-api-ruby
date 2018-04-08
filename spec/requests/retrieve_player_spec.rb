@@ -25,6 +25,26 @@ RSpec.describe "GET /api/players/:id" do
     end
   end
 
+  context "with an invalid player id" do
+    it "returns a not found status" do
+      get "/api/players/1234", headers: valid_authed_headers
+
+      expect(response).to be_not_found
+      expect(json_response[:errors]).to include "Player with id 1234 not found"
+    end
+  end
+
+  context "with a player that the player cannot read" do
+    let(:someone_else) { create :player }
+
+    it "returns an unauthorized status" do
+      get "/api/players/#{someone_else.id}", headers: valid_authed_headers
+
+      expect(response).to be_unauthorized
+      expect(json_response[:errors]).to include "Player could not be found"
+    end
+  end
+
   it_behaves_like "an authenticated request" do
     let(:make_request) do
       -> (headers) do
