@@ -10,8 +10,7 @@ class Player < ApplicationRecord
   mount_base64_uploader :avatar, AvatarUploader
 
   scope :already_matched_with, ->(player, arena) do
-    players_in_common_matches = Match.in(arena).where(seeker_id: player)
-      .or(Match.in(arena).where(opponent_id: player))
+    players_in_common_matches = Match.in(arena).for(player)
       .pluck(:seeker_id, :opponent_id).flatten
     where(id: players_in_common_matches).where.not(id: player)
   end
@@ -62,13 +61,11 @@ class Player < ApplicationRecord
   end
 
   def matched_with?(player)
-    Match.where(seeker_id: player).or(Match.where(opponent_id: player)).exists?
+    Match.for(player).exists?
   end
 
   def openly_matched_in?(arena)
-    Match.in(arena).open.where(seeker_id: id)
-      .or(Match.in(arena).open.where(opponent_id: id))
-      .exists?
+    Match.in(arena).open.for(id).exists?
   end
 
   private
