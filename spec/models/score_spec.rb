@@ -16,6 +16,16 @@ RSpec.describe Score do
     end
   end
 
+  describe ".for" do
+    let(:player) { create :player }
+    let!(:score1) { create :score, player: player }
+    let!(:score2) { create :score }
+
+    it "returns all scores that are for a specific player" do
+      expect(described_class.for(player)).to match_array [score1]
+    end
+  end
+
   describe "validations" do
     subject { build :score }
 
