@@ -11,7 +11,12 @@ class MatchSerializer
 
   def initialize(resource, options={})
     super
-    @record = MatchDecorator.new(@record)
+
+    if @record
+      @record = MatchDecorator.new(@record)
+    else
+      @records = @records.map { |record| MatchDecorator.new(record) }
+    end
   end
 
   private

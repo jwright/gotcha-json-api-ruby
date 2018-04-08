@@ -9,7 +9,12 @@ class DeviceSerializer
 
   def initialize(resource, options={})
     super
-    @record = DeviceDecorator.new(@record)
+
+    if @record
+      @record = DeviceDecorator.new(@record)
+    else
+      @records = @records.map { |record| DeviceDecorator.new(record) }
+    end
   end
 
   private
