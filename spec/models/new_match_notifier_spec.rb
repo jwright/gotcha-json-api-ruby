@@ -32,6 +32,13 @@ RSpec.describe NewMatchNotifier do
       subject.notify_player!(seeker)
     end
 
+    it "sends the appropriate category" do
+      expect_any_instance_of(Houston::Notification).to \
+        receive(:category=).with(:new_match).and_call_original
+
+      subject.notify_player!(seeker)
+    end
+
     it "tells the player how many open matches they have" do
       create :match, opponent: seeker
 
