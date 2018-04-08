@@ -22,5 +22,11 @@ RSpec.describe "GET /api/arenas/:id/scores" do
       expect(json_response[:data].map { |score| score[:id].to_i }).to \
         match_array [score1.id, score2.id]
     end
+
+    it "includes meta-data for the total score" do
+      get url, headers: valid_authed_headers
+
+      expect(json_response[:meta][:total_points]).to eq 2
+    end
   end
 end

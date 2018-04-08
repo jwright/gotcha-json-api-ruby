@@ -38,6 +38,7 @@ class API::ArenasController < ApplicationController
     arena = Arena.find params[:id]
     scores = Score.for(current_user).in(arena)
 
-    render json: ScoreSerializer.new(scores).serialized_json
+    options = { meta: { total_points: scores.sum(&:points) }}
+    render json: ScoreSerializer.new(scores, options).serialized_json
   end
 end
