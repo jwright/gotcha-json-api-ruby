@@ -62,7 +62,7 @@ class Player < ApplicationRecord
   end
 
   def matched_with?(player)
-    Match.where(seeker_id: id).or(Match.where(opponent_id: id)).exists?
+    Match.where(seeker_id: player).or(Match.where(opponent_id: player)).exists?
   end
 
   def openly_matched_in?(arena)
