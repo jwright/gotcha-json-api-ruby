@@ -19,8 +19,8 @@ RSpec.describe AvatarUploader do
   end
 
   describe "#size_range" do
-    it "allows an size range from 0 to 1 megabytes" do
-      expect(subject.size_range).to eq 1..1.megabyte
+    it "allows an size range from 0 to 2 megabytes" do
+      expect(subject.size_range).to eq 1..2.megabyte
     end
   end
 
