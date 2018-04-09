@@ -4,5 +4,6 @@ class Device < ApplicationRecord
   scope :for, ->(player) { where(player_id: player) }
 
   validates :token, presence: true,
-                    uniqueness: { message: "has already been registered" }
+                    uniqueness: { scope: :player_id,
+                                  message: "has already been registered" }
 end

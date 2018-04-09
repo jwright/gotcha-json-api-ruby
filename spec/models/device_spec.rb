@@ -22,7 +22,7 @@ RSpec.describe Device do
     end
 
     it "requires the token to be unique" do
-      create :device, token: subject.token
+      create :device, player_id: subject.player_id, token: subject.token
 
       expect(subject).to_not be_valid
       expect(subject.errors[:token]).to include "has already been registered"
