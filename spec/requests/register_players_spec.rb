@@ -8,7 +8,7 @@ RSpec.describe "POST /api/players" do
   let(:valid_parameters) do
     {
       data: {
-        type: "player",
+        type: "players",
         attributes: {
           name: "Jimmy Page",
           email_address: "jimmy@example.com",
@@ -47,7 +47,7 @@ RSpec.describe "POST /api/players" do
     it "returns the json representation of a player" do
       post "/api/players", params: valid_parameters, headers: valid_headers
 
-      expect(json_response[:data][:type]).to eq "player"
+      expect(json_response[:data][:type]).to eq "players"
       expect(json_response[:data][:id]).to eq player.id.to_s
     end
   end
@@ -56,9 +56,8 @@ RSpec.describe "POST /api/players" do
     let(:parameters) do
       {
         data: {
-          type: "player",
+          type: "players",
           email_address: "jimmy@example.com",
-          password: "p@ssword",
         }
       }.to_json
     end
@@ -67,8 +66,8 @@ RSpec.describe "POST /api/players" do
       post "/api/players", params: parameters, headers: valid_headers
 
       expect(response).to be_bad_request
-      expect(json_response[:errors]).to \
-        eq ["param is missing or the value is empty: attributes"]
+      expect(json_response[:errors].first[:detail]).to \
+        eq "email_address is not allowed."
     end
   end
 
@@ -76,9 +75,10 @@ RSpec.describe "POST /api/players" do
     let(:parameters) do
       {
         data: {
-          type: "player",
+          type: "players",
           attributes: {
             email_address: "jimmy@example.com",
+            name: "Jimmy Page"
           }
         }
       }.to_json
@@ -88,7 +88,7 @@ RSpec.describe "POST /api/players" do
       post "/api/players", params: parameters, headers: valid_headers
 
       expect(response.status).to eq 422
-      expect(json_response[:errors]).to include "Password can't be blank"
+      expect(json_response[:errors].first[:detail]).to eq "Password can't be blank"
     end
 
     it "does not create the player" do
