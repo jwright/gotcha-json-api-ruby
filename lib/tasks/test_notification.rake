@@ -13,7 +13,9 @@ task send_test_match: :environment do
                                                  password: "test",
                                                  arenas: [arena])
 
-  device = Device.create! player: seeker, token: token, registered_at: DateTime.now
+  if seeker.created_at > 5.seconds.ago
+    Device.create! player: seeker, token: token, registered_at: DateTime.now
+  end
 
   opponent = arena.players.second || Player.create!(name: "Robert Plant",
                                                     email_address: "robert@example.com",
