@@ -44,7 +44,7 @@ RSpec.describe "POST /api/players" do
       expect(player.api_key).to_not be_blank
     end
 
-    fit "returns the json representation of a player" do
+    it "returns the json representation of a player" do
       post "/api/players", params: valid_parameters, headers: valid_headers
 
       expect(json_response[:data][:type]).to eq "players"
