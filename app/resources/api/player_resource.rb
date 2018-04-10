@@ -10,6 +10,8 @@ class API::PlayerResource < JSONAPI::Resource
   end
 
   def fetchable_fields
-    super - [:password]
+    # These need to be updatable from the processor, so store them
+    # in a variable so it can be updated
+    @fetchable_fields ||= (super - [:password])
   end
 end
