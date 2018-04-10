@@ -1,4 +1,6 @@
 class API::DevicesController < ApplicationController
+  include JSONAPI::ActsAsResourceController
+
   before_action :require_authorization
 
   def create
@@ -12,13 +14,6 @@ class API::DevicesController < ApplicationController
     end
 
     render json: DeviceSerializer.new(device).serialized_json, status: status
-  end
-
-  def destroy
-    device = Device.find_by_token! params[:id]
-    device.destroy
-
-    head :no_content
   end
 
   private
