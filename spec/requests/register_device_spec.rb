@@ -6,7 +6,7 @@ RSpec.describe "POST /api/devices" do
   let(:valid_parameters) do
     {
       data: {
-        type: "device",
+        type: "devices",
         attributes: {
           token: token
         }
@@ -18,7 +18,8 @@ RSpec.describe "POST /api/devices" do
     let(:device) { Device.unscoped.last }
 
     it "returns a created status" do
-      post "/api/devices", params: valid_parameters, headers: valid_authed_headers
+      post "/api/devices", params: valid_parameters,
+                           headers: valid_authed_headers
 
       expect(response).to be_created
     end
@@ -39,7 +40,7 @@ RSpec.describe "POST /api/devices" do
     it "returns a json representation of a device" do
       post "/api/devices", params: valid_parameters, headers: valid_authed_headers
 
-      expect(json_response[:data][:type]).to eq "device"
+      expect(json_response[:data][:type]).to eq "devices"
       expect(json_response[:data][:id]).to eq device.id.to_s
     end
   end
@@ -48,7 +49,8 @@ RSpec.describe "POST /api/devices" do
     let!(:device) { create :device, player: player, token: token }
 
     it "returns an ok status" do
-      post "/api/devices", params: valid_parameters, headers: valid_authed_headers
+      post "/api/devices", params: valid_parameters,
+                           headers: valid_authed_headers
 
       expect(response).to be_ok
     end
@@ -63,7 +65,7 @@ RSpec.describe "POST /api/devices" do
     let(:parameters) do
       {
         data: {
-          type: "device",
+          type: "devices",
           token: token
         }
       }.to_json
@@ -73,8 +75,8 @@ RSpec.describe "POST /api/devices" do
       post "/api/devices", params: parameters, headers: valid_authed_headers
 
       expect(response).to be_bad_request
-      expect(json_response[:errors]).to \
-        eq ["param is missing or the value is empty: attributes"]
+      expect(json_response[:errors].first[:detail]).to \
+        eq "token is not allowed."
     end
   end
 
@@ -82,7 +84,7 @@ RSpec.describe "POST /api/devices" do
     let(:parameters) do
       {
         data: {
-          type: "device",
+          type: "devices",
           attributes: {
             token: "",
           }
@@ -94,7 +96,8 @@ RSpec.describe "POST /api/devices" do
       post "/api/devices", params: parameters, headers: valid_authed_headers
 
       expect(response.status).to eq 422
-      expect(json_response[:errors]).to include "Token can't be blank"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Token can't be blank"
     end
 
     it "does not create the device" do
