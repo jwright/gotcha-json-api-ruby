@@ -6,7 +6,7 @@ RSpec.describe "POST /api/sessions" do
   let(:valid_parameters) do
     {
       data: {
-        type: "player",
+        type: "sessions",
         attributes: {
           email_address: player.email_address,
           password: password
@@ -22,7 +22,7 @@ RSpec.describe "POST /api/sessions" do
       expect(response).to be_ok
     end
 
-    it "generates an api key for the user" do
+    it "generates an api key for the player" do
       post "/api/sessions", params: valid_parameters, headers: valid_headers
 
       expect(player.reload.api_key).to_not be_blank
@@ -40,7 +40,7 @@ RSpec.describe "POST /api/sessions" do
     it "returns the json representation of a player" do
       post "/api/sessions", params: valid_parameters, headers: valid_headers
 
-      expect(json_response[:data][:type]).to eq "player"
+      expect(json_response[:data][:type]).to eq "players"
       expect(json_response[:data][:id]).to eq player.id.to_s
     end
   end
@@ -49,6 +49,7 @@ RSpec.describe "POST /api/sessions" do
     let(:parameters) do
       {
         data: {
+          type: "sessions",
           attributes: {
             email_address: "someone-else@example.com",
             password: password
@@ -61,7 +62,8 @@ RSpec.describe "POST /api/sessions" do
       post "/api/sessions", params: parameters, headers: valid_headers
 
       expect(response).to have_http_status(:unauthorized)
-      expect(json_response[:errors]).to include "Not authorized"
+      expect(json_response[:errors].first[:detail]).to \
+        include "Invalid email address or password"
     end
   end
 

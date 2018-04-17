@@ -24,6 +24,22 @@ module JSONAPI
         "#{attr_key.to_s.humanize} #{message}"
       end
     end
+
+    class NotAuthorized < Error
+      def initialize(message, error_object_overrides={})
+        @message = message
+        super error_object_overrides
+      end
+
+      def errors
+        [create_error_object(
+          code: Rack::Utils::SYMBOL_TO_STATUS_CODE[:unauthorized],
+          status: :unauthorized,
+          title: "Not authorized",
+          detail: @message
+        )]
+      end
+    end
   end
 end
 

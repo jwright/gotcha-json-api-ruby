@@ -1,18 +1,7 @@
 class API::SessionsController < ApplicationController
+  include JSONAPI::ActsAsResourceController
+
   before_action :require_authorization, only: :destroy
-
-  def create
-    player = Player.authenticate(player_params[:email_address],
-                                 player_params[:password])
-
-    if player
-      player.generate_api_key!(false)
-
-      render json: PlayerSerializer.new(player).serialized_json
-    else
-      raise JSONAPI::UnauthorizedError
-    end
-  end
 
   def destroy
     current_user.update_attributes! api_key: nil
@@ -22,10 +11,7 @@ class API::SessionsController < ApplicationController
 
   private
 
-  def player_params
-    params.require(:data)
-          .require(:attributes)
-          .permit(:email_address,
-                  :password)
+  def context
+    { current_user: current_user }
   end
 end
