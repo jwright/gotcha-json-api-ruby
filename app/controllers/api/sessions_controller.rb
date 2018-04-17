@@ -6,7 +6,10 @@ class API::SessionsController < ApplicationController
   def destroy
     current_user.update_attributes! api_key: nil
 
-    head :no_content
+    results = JSONAPI::OperationResults.new
+    results.add_result JSONAPI::OperationResult.new(:no_content)
+
+    render_results results
   end
 
   private
