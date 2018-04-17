@@ -1,6 +1,10 @@
 class API::PlayerResource < JSONAPI::Resource
   attributes :api_key, :avatar, :email_address, :name, :password
 
+  after_create do
+    _model.update_attributes! api_key: TokenGenerator.generate
+  end
+
   def self.creatable_fields(_context)
     super - [:api_key]
   end

@@ -13,11 +13,4 @@ class API::PlayerProcessor < JSONAPI::Processor
       result.resource.fetchable_fields.delete(:api_key)
     end
   end
-
-  after_create_resource do
-    if result.is_a?(JSONAPI::ResourceOperationResult)
-      player = result.resource._model
-      player.update_attributes! api_key: TokenGenerator.generate
-    end
-  end
 end
