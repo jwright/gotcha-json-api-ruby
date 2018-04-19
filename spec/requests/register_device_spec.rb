@@ -101,7 +101,8 @@ RSpec.describe "POST /api/devices" do
 
   context "without a type specified" do
     it "returns a bad request status" do
-      post "/api/devices", params: { data: {}}, headers: valid_authed_headers
+      post "/api/devices", params: { data: {}}.to_json,
+                           headers: valid_authed_headers
 
       expect(response).to be_bad_request
       expect(json_response[:errors]).to \
