@@ -78,38 +78,6 @@ RSpec.describe "POST /api/devices" do
     end
   end
 
-  context "with an incorrect type specified" do
-    let(:parameters) do
-      {
-        data: {
-          type: "blah",
-          attributes: {
-            token: token
-          }
-        }
-      }.to_json
-    end
-
-    it "returns a bad request status" do
-      post "/api/devices", params: parameters, headers: valid_authed_headers
-
-      expect(response).to be_bad_request
-      expect(json_response[:errors]).to \
-        eq ["blah is not a valid type for this operation"]
-    end
-  end
-
-  context "without a type specified" do
-    it "returns a bad request status" do
-      post "/api/devices", params: { data: {}}.to_json,
-                           headers: valid_authed_headers
-
-      expect(response).to be_bad_request
-      expect(json_response[:errors]).to \
-        eq ["param is missing or the value is empty: type"]
-    end
-  end
-
   context "with an invalid attribute" do
     let(:parameters) do
       {
@@ -141,6 +109,14 @@ RSpec.describe "POST /api/devices" do
       -> (headers) do
         post "/api/devices", params: valid_parameters,
                              headers: valid_headers.merge(headers)
+      end
+    end
+  end
+
+  it_behaves_like "a request requiring the correct type" do
+    let(:make_request) do
+      -> (params) do
+        post "/api/devices", params: params, headers: valid_authed_headers
       end
     end
   end
