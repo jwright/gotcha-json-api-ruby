@@ -32,8 +32,16 @@ class ApplicationController < ActionController::API
     render_errors exception.message, :unauthorized
   end
 
+  rescue_from JSONAPI::MissingTypeParameterError do |exception|
+    render_errors exception.message
+  end
+
   rescue_from JSONAPI::NotAcceptableError do |exception|
     render_errors exception.message, :not_acceptable
+  end
+
+  rescue_from JSONAPI::TypeMismatchError do |exception|
+    render_errors exception.message
   end
 
   rescue_from JSONAPI::UnauthorizedError do |exception|
