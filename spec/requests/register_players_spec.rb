@@ -106,4 +106,12 @@ RSpec.describe "POST /api/players" do
       end
     end
   end
+
+  it_behaves_like "a request requiring the correct type" do
+    let(:make_request) do
+      -> (params) do
+        post "/api/players", params: params, headers: valid_headers
+      end
+    end
+  end
 end

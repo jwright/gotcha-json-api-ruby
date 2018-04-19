@@ -103,7 +103,7 @@ RSpec.describe "POST /api/matches" do
     let(:make_request) do
       -> (headers) do
         post "/api/matches", params: valid_parameters,
-                             headers: valid_headers.merge(headers)
+                             headers: valid_authed_headers.merge(headers)
       end
     end
   end
@@ -112,7 +112,15 @@ RSpec.describe "POST /api/matches" do
     let(:make_request) do
       -> (headers) do
         post "/api/matches", params: valid_parameters,
-                             headers: valid_headers.merge(headers)
+                             headers: valid_authed_headers.merge(headers)
+      end
+    end
+  end
+
+  it_behaves_like "a request requiring the correct type" do
+    let(:make_request) do
+      -> (params) do
+        post "/api/matches", params: params, headers: valid_authed_headers
       end
     end
   end

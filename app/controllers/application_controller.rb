@@ -8,6 +8,7 @@ class ApplicationController < ActionController::API
 
   before_action :verify_content_type_header,
                 :verify_accept_header,
+                :verify_type_parameter,
                 :set_current_user
 
   rescue_from ActiveRecord::RecordInvalid do |exception|
@@ -54,6 +55,14 @@ class ApplicationController < ActionController::API
 
   protected
 
+  def expected_resource_type
+    self.class.name
+      .demodulize
+      .gsub("Controller", "")
+      .underscore
+      .singularize
+  end
+
   def render_errors(messages, status=:bad_request)
     errors = [messages].flatten
 
@@ -88,5 +97,15 @@ class ApplicationController < ActionController::API
         raise JSONAPI::UnsupportedMediaTypeError.new(request.content_type)
       end
     end
+  end
+
+  def verify_type_parameter
+    verify_data_type_parameter unless params[:data].nil?
+  end
+
+  def verify_data_type_parameter
+    raise JSONAPI::MissingTypeParameterError if params[:data][:type].nil?
+    raise JSONAPI::TypeMismatchError.new(params[:data][:type]) \
+      unless params[:data][:type] == expected_resource_type
   end
 end

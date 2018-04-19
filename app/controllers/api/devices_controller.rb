@@ -1,5 +1,5 @@
 class API::DevicesController < ApplicationController
-  before_action :verify_type_parameter, :require_authorization
+  before_action :require_authorization
 
   def create
     device = Device.find_by player_id: current_user.id, token: device_params[:token]
@@ -27,23 +27,5 @@ class API::DevicesController < ApplicationController
     params.require(:data)
           .require(:attributes)
           .permit(:token)
-  end
-
-  def expected_resource_type
-    self.class.name
-      .demodulize
-      .gsub("Controller", "")
-      .underscore
-      .singularize
-  end
-
-  def verify_type_parameter
-    verify_data_type_parameter unless params[:data].nil?
-  end
-
-  def verify_data_type_parameter
-    raise JSONAPI::MissingTypeParameterError if params[:data][:type].nil?
-    raise JSONAPI::TypeMismatchError.new(params[:data][:type]) \
-      unless params[:data][:type] == expected_resource_type
   end
 end
