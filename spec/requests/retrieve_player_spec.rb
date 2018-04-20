@@ -41,7 +41,8 @@ RSpec.describe "GET /api/players/:id" do
       get "/api/players/#{someone_else.id}", headers: valid_authed_headers
 
       expect(response).to be_unauthorized
-      expect(json_response[:errors]).to include "Player could not be found"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Player could not be found"
     end
   end
 

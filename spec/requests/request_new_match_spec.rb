@@ -75,7 +75,8 @@ RSpec.describe "POST /api/matches" do
       post "/api/matches", params: parameters, headers: valid_authed_headers
 
       expect(response).to be_unauthorized
-      expect(json_response[:errors]).to include "Not authorized to play in that Arena"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Not authorized to play in that Arena"
     end
   end
 

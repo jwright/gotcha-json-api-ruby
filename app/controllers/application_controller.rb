@@ -30,7 +30,8 @@ class ApplicationController < ActionController::API
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    render_errors exception.message, :unauthorized
+    render_jsonapi_errors \
+      JSONAPI::Exceptions::NotAuthorizedError.new(exception.message)
   end
 
   rescue_from JSONAPI::Exceptions::RuntimeError do |exception|
