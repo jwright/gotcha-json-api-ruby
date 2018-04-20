@@ -34,8 +34,8 @@ RSpec.shared_examples "a request requiring the correct type" do
       make_request.call({ data: {}}.to_json)
 
       expect(response).to be_bad_request
-      expect(json_response[:errors]).to \
-        eq ["param is missing or the value is empty: type"]
+      expect(json_response[:errors].first[:detail]).to \
+        eq "param is missing or the value is empty: type"
     end
   end
 end

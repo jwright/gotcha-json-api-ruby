@@ -1,6 +1,6 @@
 module JSONAPI
   module Exceptions
-    class TypeMismatchError < RuntimeError
+    class TypeMismatchError < Exceptions::RuntimeError
       def initialize(type)
         @detail = "#{type} is not a valid type for this operation"
       end

@@ -3,12 +3,6 @@ require_relative "jsonapi/exceptions"
 module JSONAPI
   MEDIA_TYPE = "application/vnd.api+json"
 
-  class MissingTypeParameterError < RuntimeError
-    def initialize
-      super ActionController::ParameterMissing.new(:type).message
-    end
-  end
-
   class NotAcceptableError < RuntimeError
     attr_reader :media_type
 

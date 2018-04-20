@@ -37,10 +37,6 @@ class ApplicationController < ActionController::API
     render_jsonapi_errors exception
   end
 
-  rescue_from JSONAPI::MissingTypeParameterError do |exception|
-    render_errors exception.message
-  end
-
   rescue_from JSONAPI::NotAcceptableError do |exception|
     render_errors exception.message, :not_acceptable
   end
@@ -108,7 +104,8 @@ class ApplicationController < ActionController::API
   end
 
   def verify_data_type_parameter
-    raise JSONAPI::MissingTypeParameterError if params[:data][:type].nil?
+    raise JSONAPI::Exceptions::MissingTypeParameterError \
+      if params[:data][:type].nil?
     raise JSONAPI::Exceptions::TypeMismatchError.new(params[:data][:type]) \
       unless params[:data][:type] == expected_resource_type
   end
