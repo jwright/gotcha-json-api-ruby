@@ -18,7 +18,7 @@ module JSONAPI
         @links = options[:links] || []
         @meta = options[:meta] || {}
         @source = options[:source] || {}
-        @status = status(options[:status])
+        @status = get_status(options[:status])
         @code = options[:code] || @status
         @title = options[:title]
       end
@@ -31,7 +31,7 @@ module JSONAPI
 
       private
 
-      def status(status)
+      def get_status(status)
         if status.is_a? Symbol
           Rack::Utils::SYMBOL_TO_STATUS_CODE[status]
         else

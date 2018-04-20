@@ -37,10 +37,6 @@ class ApplicationController < ActionController::API
     render_jsonapi_errors exception
   end
 
-  rescue_from JSONAPI::NotAcceptableError do |exception|
-    render_errors exception.message, :not_acceptable
-  end
-
   rescue_from JSONAPI::UnauthorizedError do |exception|
     render_errors exception.message, :unauthorized
   end
@@ -84,7 +80,7 @@ class ApplicationController < ActionController::API
   def verify_accept_header
     unless request.accept == JSONAPI::MEDIA_TYPE ||
            request.accept.start_with?("*/*")
-      raise JSONAPI::NotAcceptableError.new(request.accept)
+      raise JSONAPI::Exceptions::NotAcceptableError.new(request.accept)
     end
   end
 
