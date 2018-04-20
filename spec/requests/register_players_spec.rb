@@ -67,8 +67,8 @@ RSpec.describe "POST /api/players" do
       post "/api/players", params: parameters, headers: valid_headers
 
       expect(response).to be_bad_request
-      expect(json_response[:errors]).to \
-        eq ["param is missing or the value is empty: attributes"]
+      expect(json_response[:errors].first[:detail]).to \
+        eq "param is missing or the value is empty: attributes"
     end
   end
 

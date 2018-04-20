@@ -26,7 +26,8 @@ class ApplicationController < ActionController::API
   end
 
   rescue_from ActionController::ParameterMissing do |exception|
-    render_errors exception.message
+    render_jsonapi_errors \
+      JSONAPI::Exceptions::ParameterMissingError.new(exception.message)
   end
 
   rescue_from CanCan::AccessDenied do |exception|
