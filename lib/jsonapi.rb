@@ -8,13 +8,4 @@ module JSONAPI
       super "Not authorized"
     end
   end
-
-  class UnsupportedMediaTypeError < RuntimeError
-    attr_reader :media_type
-
-    def initialize(media_type)
-      @media_type = media_type
-      super "Unsupported Media Type"
-    end
-  end
 end

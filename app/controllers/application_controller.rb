@@ -41,10 +41,6 @@ class ApplicationController < ActionController::API
     render_errors exception.message, :unauthorized
   end
 
-  rescue_from JSONAPI::UnsupportedMediaTypeError do |exception|
-    render_errors exception.message, :unsupported_media_type
-  end
-
   protected
 
   def expected_resource_type
@@ -90,7 +86,8 @@ class ApplicationController < ActionController::API
     # There is a PR to fix this: https://github.com/rails/rails/pull/26632
     if request.post? || request.put? || request.patch? || request.delete?
       unless request.content_type == JSONAPI::MEDIA_TYPE
-        raise JSONAPI::UnsupportedMediaTypeError.new(request.content_type)
+        raise JSONAPI::Exceptions::UnsupportedMediaTypeError
+          .new(request.content_type)
       end
     end
   end
