@@ -10,7 +10,8 @@ class API::SessionsController < ApplicationController
 
       render json: PlayerSerializer.new(player).serialized_json
     else
-      raise JSONAPI::UnauthorizedError
+      raise JSONAPI::Exceptions::NotAuthorizedError
+        .new("Invalid email address or password")
     end
   end
 

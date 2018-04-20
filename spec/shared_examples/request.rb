@@ -46,7 +46,8 @@ RSpec.shared_examples "an authenticated request" do
       make_request.call("Authorization": "Bearer BLAH")
 
       expect(response).to be_unauthorized
-      expect(json_response[:errors]).to eq ["Not authorized"]
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Not Authorized"
     end
   end
 end

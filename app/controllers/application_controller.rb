@@ -37,10 +37,6 @@ class ApplicationController < ActionController::API
     render_jsonapi_errors exception
   end
 
-  rescue_from JSONAPI::UnauthorizedError do |exception|
-    render_errors exception.message, :unauthorized
-  end
-
   protected
 
   def expected_resource_type
@@ -62,7 +58,7 @@ class ApplicationController < ActionController::API
   end
 
   def require_authorization
-    raise JSONAPI::UnauthorizedError if current_user.nil?
+    raise JSONAPI::Exceptions::NotAuthorizedError if current_user.nil?
   end
 
   def set_current_user

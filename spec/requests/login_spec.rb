@@ -62,7 +62,8 @@ RSpec.describe "POST /api/sessions" do
       post "/api/sessions", params: parameters, headers: valid_headers
 
       expect(response).to have_http_status(:unauthorized)
-      expect(json_response[:errors]).to include "Not authorized"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Invalid email address or password"
     end
   end
 
