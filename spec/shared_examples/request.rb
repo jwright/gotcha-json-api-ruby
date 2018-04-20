@@ -24,8 +24,8 @@ RSpec.shared_examples "a request requiring the correct type" do
       make_request.call({ data: { type: "blah" }}.to_json)
 
       expect(response).to be_bad_request
-      expect(json_response[:errors]).to \
-        eq ["blah is not a valid type for this operation"]
+      expect(json_response[:errors].first[:detail]).to \
+        eq "blah is not a valid type for this operation"
     end
   end
 

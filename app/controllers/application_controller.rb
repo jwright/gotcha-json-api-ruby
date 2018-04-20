@@ -33,16 +33,16 @@ class ApplicationController < ActionController::API
     render_errors exception.message, :unauthorized
   end
 
+  rescue_from JSONAPI::Exceptions::RuntimeError do |exception|
+    render_jsonapi_errors exception
+  end
+
   rescue_from JSONAPI::MissingTypeParameterError do |exception|
     render_errors exception.message
   end
 
   rescue_from JSONAPI::NotAcceptableError do |exception|
     render_errors exception.message, :not_acceptable
-  end
-
-  rescue_from JSONAPI::TypeMismatchError do |exception|
-    render_errors exception.message
   end
 
   rescue_from JSONAPI::UnauthorizedError do |exception|
@@ -61,6 +61,10 @@ class ApplicationController < ActionController::API
       .gsub("Controller", "")
       .underscore
       .singularize
+  end
+
+  def render_jsonapi_errors(exception)
+    render json: { errors: exception.errors }, status: exception.status
   end
 
   def render_errors(messages, status=:bad_request)
@@ -105,7 +109,7 @@ class ApplicationController < ActionController::API
 
   def verify_data_type_parameter
     raise JSONAPI::MissingTypeParameterError if params[:data][:type].nil?
-    raise JSONAPI::TypeMismatchError.new(params[:data][:type]) \
+    raise JSONAPI::Exceptions::TypeMismatchError.new(params[:data][:type]) \
       unless params[:data][:type] == expected_resource_type
   end
 end
