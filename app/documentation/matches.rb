@@ -51,7 +51,10 @@ module Documentation
             response 401 do
               key :description, "Unauthorized"
               schema do
-                key :type, :string
+                key :type, :array
+                items do
+                  key :"$ref", :Error
+                end
               end
               example name: JSONAPI::MEDIA_TYPE do
                 key :errors, "Unauthorized"

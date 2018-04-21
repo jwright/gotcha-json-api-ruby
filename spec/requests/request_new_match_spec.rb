@@ -75,7 +75,8 @@ RSpec.describe "POST /api/matches" do
       post "/api/matches", params: parameters, headers: valid_authed_headers
 
       expect(response).to be_unauthorized
-      expect(json_response[:errors]).to include "Not authorized to play in that Arena"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Not authorized to play in that Arena"
     end
   end
 
@@ -95,7 +96,8 @@ RSpec.describe "POST /api/matches" do
       post "/api/matches", params: parameters, headers: valid_authed_headers
 
       expect(response).to be_not_found
-      expect(json_response[:errors]).to include "Arena with id -1 not found"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Arena with id -1 not found"
     end
   end
 
@@ -103,7 +105,7 @@ RSpec.describe "POST /api/matches" do
     let(:make_request) do
       -> (headers) do
         post "/api/matches", params: valid_parameters,
-                             headers: valid_headers.merge(headers)
+                             headers: valid_authed_headers.merge(headers)
       end
     end
   end
@@ -112,7 +114,15 @@ RSpec.describe "POST /api/matches" do
     let(:make_request) do
       -> (headers) do
         post "/api/matches", params: valid_parameters,
-                             headers: valid_headers.merge(headers)
+                             headers: valid_authed_headers.merge(headers)
+      end
+    end
+  end
+
+  it_behaves_like "a request requiring the correct type" do
+    let(:make_request) do
+      -> (params) do
+        post "/api/matches", params: params, headers: valid_authed_headers
       end
     end
   end

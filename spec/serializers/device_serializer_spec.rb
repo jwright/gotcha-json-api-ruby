@@ -20,7 +20,12 @@ RSpec.describe DeviceSerializer do
       expect(hash[:attributes].keys).to \
         match_array [:registered_at, :token]
       expect(hash[:attributes][:token]).to eq device.token
+    end
+
+    it "returns the datetimes in unix Epoch time" do
       expect(hash[:attributes][:registered_at]).to be_a Integer
+      expect(Time.at(hash[:attributes][:registered_at])).to \
+        be_within(1.second).of(Time.now)
     end
 
     it "serializes the relationships" do

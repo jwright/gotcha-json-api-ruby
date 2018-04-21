@@ -42,7 +42,8 @@ RSpec.describe "POST /api/matches/:id/capture" do
       post "/api/matches/-1/capture", headers: valid_authed_headers
 
       expect(response).to be_not_found
-      expect(json_response[:errors]).to include "Match with id -1 not found"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Match with id -1 not found"
     end
   end
 
@@ -53,7 +54,8 @@ RSpec.describe "POST /api/matches/:id/capture" do
       post url, headers: valid_authed_headers
 
       expect(response.status).to eq 422
-      expect(json_response[:errors]).to include "Match is not open"
+      expect(json_response[:errors].map { |error| error[:detail] }).to \
+        include "Match is not open"
     end
   end
 
@@ -64,7 +66,8 @@ RSpec.describe "POST /api/matches/:id/capture" do
       post url, headers: valid_authed_headers
 
       expect(response).to be_unauthorized
-      expect(json_response[:errors]).to include "Not authorized to play in that Match"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Not authorized to play in that Match"
     end
   end
 

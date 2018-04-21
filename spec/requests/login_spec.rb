@@ -6,7 +6,7 @@ RSpec.describe "POST /api/sessions" do
   let(:valid_parameters) do
     {
       data: {
-        type: "player",
+        type: "session",
         attributes: {
           email_address: player.email_address,
           password: password
@@ -49,6 +49,7 @@ RSpec.describe "POST /api/sessions" do
     let(:parameters) do
       {
         data: {
+          type: "session",
           attributes: {
             email_address: "someone-else@example.com",
             password: password
@@ -61,7 +62,8 @@ RSpec.describe "POST /api/sessions" do
       post "/api/sessions", params: parameters, headers: valid_headers
 
       expect(response).to have_http_status(:unauthorized)
-      expect(json_response[:errors]).to include "Not authorized"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Invalid email address or password"
     end
   end
 
@@ -70,6 +72,14 @@ RSpec.describe "POST /api/sessions" do
       -> (headers) do
         post "/api/sessions", params: valid_parameters,
                               headers: valid_headers.merge(headers)
+      end
+    end
+  end
+
+  it_behaves_like "a request requiring the correct type" do
+    let(:make_request) do
+      -> (params) do
+        post "/api/sessions", params: params, headers: valid_headers
       end
     end
   end

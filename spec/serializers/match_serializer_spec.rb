@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe MatchSerializer do
-  let(:match) { create :match }
+  let(:match) { create :match, :found }
 
   subject { described_class.new(match) }
 
@@ -19,6 +19,15 @@ RSpec.describe MatchSerializer do
     it "serializes the attributes" do
       expect(hash[:attributes].keys).to \
         match_array [:found_at, :matched_at]
+    end
+
+    it "returns the datetimes in unix Epoch time" do
+      expect(hash[:attributes][:found_at]).to be_kind_of(Integer)
+      expect(hash[:attributes][:matched_at]).to be_kind_of(Integer)
+      expect(Time.at(hash[:attributes][:found_at])).to \
+        be_within(1.second).of(Time.now)
+      expect(Time.at(hash[:attributes][:matched_at])).to \
+        be_within(1.second).of(Time.now)
     end
 
     it "serializes the relationships" do

@@ -25,7 +25,7 @@ module Documentation
               example name: JSONAPI::MEDIA_TYPE do
                 key :data, [{
                   id: "12345",
-                  type: "player",
+                  type: "session",
                   attributes: {
                     name: "Jimmy Page",
                     email_address: "jimmy@example.org",
@@ -38,10 +38,18 @@ module Documentation
             response 401 do
               key :description, "Unauthorized"
               schema do
-                key :type, :string
+                key :type, :array
+                items do
+                  key :"$ref", :Error
+                end
               end
               example name: JSONAPI::MEDIA_TYPE do
-                key :errors, "Not authorized"
+                key :errors, [{
+                  code: 401,
+                  detail: "Not authorized",
+                  status: 401,
+                  title: "Not authorized",
+                }]
               end
             end
           end

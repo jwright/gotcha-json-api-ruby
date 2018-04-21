@@ -4,24 +4,10 @@ class DeviceSerializer
   include FastJsonapi::ObjectSerializer
 
   set_type :device
-  attributes :registered_at, :token
+  attributes :token
   belongs_to :player
 
-  def initialize(resource, options={})
-    super
-
-    if @record
-      @record = DeviceDecorator.new(@record)
-    else
-      @records = @records.map { |record| DeviceDecorator.new(record) }
-    end
-  end
-
-  private
-
-  class DeviceDecorator < SimpleDelegator
-    def registered_at
-      __getobj__.registered_at.to_i
-    end
+  attribute :registered_at do |object|
+    object.registered_at.to_i
   end
 end

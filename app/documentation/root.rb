@@ -17,6 +17,33 @@ module Documentation
       base.send :include, Sessions
 
       base.class_eval do
+        swagger_schema :Error do
+          key :type, :object
+          property :code do
+            key :type, :integer
+            key :description, "A numeric code that represents the error"
+          end
+          property :detail do
+            key :type, :string
+            key :description, "The full error message"
+          end
+          property :source do
+            key :type, :object
+            property :pointer do
+              key :type, :string
+              key :description, "The path in the response that represents the field which caused the error"
+            end
+          end
+          property :status do
+            key :type, :integer
+            key :description, "The HTTP status code for the errors"
+          end
+          property :title do
+            key :type, :string
+            key :description, "The detail of the error message without the field"
+          end
+        end
+
         swagger_root do
           key :swagger, "2.0"
           key :schemes, ["http"]

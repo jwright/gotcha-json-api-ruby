@@ -67,8 +67,8 @@ RSpec.describe "POST /api/players" do
       post "/api/players", params: parameters, headers: valid_headers
 
       expect(response).to be_bad_request
-      expect(json_response[:errors]).to \
-        eq ["param is missing or the value is empty: attributes"]
+      expect(json_response[:errors].first[:detail]).to \
+        eq "param is missing or the value is empty: attributes"
     end
   end
 
@@ -88,7 +88,8 @@ RSpec.describe "POST /api/players" do
       post "/api/players", params: parameters, headers: valid_headers
 
       expect(response.status).to eq 422
-      expect(json_response[:errors]).to include "Password can't be blank"
+      expect(json_response[:errors].map { |error| error[:detail] }).to \
+        include "Password can't be blank"
     end
 
     it "does not create the player" do
@@ -103,6 +104,14 @@ RSpec.describe "POST /api/players" do
       -> (headers) do
         post "/api/players", params: valid_parameters,
                              headers: valid_headers.merge(headers)
+      end
+    end
+  end
+
+  it_behaves_like "a request requiring the correct type" do
+    let(:make_request) do
+      -> (params) do
+        post "/api/players", params: params, headers: valid_headers
       end
     end
   end
