@@ -1,9 +1,9 @@
 require "request_helper"
 
-RSpec.describe "GET /api/arenas/:id/scores" do
+RSpec.describe "GET /api/scores?filter[arena]=:arena_id" do
   let(:arena) { create :arena }
   let(:player) { create :player, :authorized, arenas: [arena] }
-  let(:url) { "/api/arenas/#{arena.id}/scores" }
+  let(:url) { "/api/scores?filter[arena]=#{arena.id}" }
 
   context "with a valid request" do
     let!(:score1) { create :score, arena: arena, player: player, points: 1 }
@@ -33,16 +33,6 @@ RSpec.describe "GET /api/arenas/:id/scores" do
       get url, headers: valid_authed_headers
 
       expect(json_response[:meta][:placement]).to eq "1st"
-    end
-  end
-
-  context "with an invalid arena id" do
-    it "returns a not found status" do
-      get "/api/arenas/1234/scores", headers: valid_authed_headers
-
-      expect(response.status).to eq 404
-      expect(json_response[:errors].first[:detail]).to \
-        eq "Arena with id 1234 not found"
     end
   end
 
