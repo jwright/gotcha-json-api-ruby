@@ -12,27 +12,27 @@ class ApplicationController < ActionController::API
                 :set_current_user
 
   rescue_from ActiveRecord::RecordInvalid do |exception|
-    render_jsonapi_errors \
+    render_errors \
       JSONAPI::Exceptions::UnprocessableEntityError.new(exception.record.errors)
   end
 
   rescue_from ActiveRecord::RecordNotFound do |exception|
-    render_jsonapi_errors \
+    render_errors \
       JSONAPI::Exceptions::RecordNotFoundError.new(exception)
   end
 
   rescue_from ActionController::ParameterMissing do |exception|
-    render_jsonapi_errors \
+    render_errors \
       JSONAPI::Exceptions::ParameterMissingError.new(exception.message)
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    render_jsonapi_errors \
+    render_errors \
       JSONAPI::Exceptions::NotAuthorizedError.new(exception.message)
   end
 
   rescue_from JSONAPI::Exceptions::RuntimeError do |exception|
-    render_jsonapi_errors exception
+    render_errors exception
   end
 
   protected
@@ -45,14 +45,8 @@ class ApplicationController < ActionController::API
       .singularize
   end
 
-  def render_jsonapi_errors(exception)
+  def render_errors(exception)
     render json: { errors: exception.errors }, status: exception.status
-  end
-
-  def render_errors(messages, status=:bad_request)
-    errors = [messages].flatten
-
-    render json: { errors: errors }, status: status
   end
 
   def require_authorization
