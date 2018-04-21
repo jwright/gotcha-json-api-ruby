@@ -30,7 +30,8 @@ RSpec.describe "GET /api/players/:id" do
       get "/api/players/1234", headers: valid_authed_headers
 
       expect(response).to be_not_found
-      expect(json_response[:errors]).to include "Player with id 1234 not found"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Player with id 1234 not found"
     end
   end
 

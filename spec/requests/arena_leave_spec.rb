@@ -26,7 +26,8 @@ RSpec.describe "POST /api/arenas/:id/leave" do
       post "/api/arenas/#{arena.id}/leave", headers: valid_authed_headers
 
       expect(response).to be_not_found
-      expect(json_response[:errors]).to include "Player not found in Arena"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Player not found in Arena"
     end
   end
 
@@ -35,7 +36,8 @@ RSpec.describe "POST /api/arenas/:id/leave" do
       post "/api/arenas/1234/leave", headers: valid_authed_headers
 
       expect(response).to be_not_found
-      expect(json_response[:errors]).to include "Arena with id 1234 not found"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Arena with id 1234 not found"
     end
   end
 

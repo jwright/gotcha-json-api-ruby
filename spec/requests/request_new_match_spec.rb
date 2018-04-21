@@ -96,7 +96,8 @@ RSpec.describe "POST /api/matches" do
       post "/api/matches", params: parameters, headers: valid_authed_headers
 
       expect(response).to be_not_found
-      expect(json_response[:errors]).to include "Arena with id -1 not found"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Arena with id -1 not found"
     end
   end
 

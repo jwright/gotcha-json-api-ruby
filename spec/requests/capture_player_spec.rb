@@ -42,7 +42,8 @@ RSpec.describe "POST /api/matches/:id/capture" do
       post "/api/matches/-1/capture", headers: valid_authed_headers
 
       expect(response).to be_not_found
-      expect(json_response[:errors]).to include "Match with id -1 not found"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Match with id -1 not found"
     end
   end
 

@@ -16,13 +16,8 @@ class ApplicationController < ActionController::API
   end
 
   rescue_from ActiveRecord::RecordNotFound do |exception|
-    if exception.model.present?
-      exception = "#{exception.model} with #{exception.primary_key} "\
-                  "#{exception.id} not found"
-    else
-      exception = exception.message
-    end
-    render_errors exception, :not_found
+    render_jsonapi_errors \
+      JSONAPI::Exceptions::RecordNotFoundError.new(exception)
   end
 
   rescue_from ActionController::ParameterMissing do |exception|

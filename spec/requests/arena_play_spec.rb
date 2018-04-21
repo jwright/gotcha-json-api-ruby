@@ -61,7 +61,8 @@ RSpec.describe "POST /api/arenas/:id/play" do
                                     headers: valid_authed_headers
 
       expect(response.status).to eq 404
-      expect(json_response[:errors]).to include "Arena with id 1234 not found"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Arena with id 1234 not found"
     end
 
     it "does not create the player arena" do

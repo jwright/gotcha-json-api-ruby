@@ -41,7 +41,8 @@ RSpec.describe "GET /api/arenas/:id/scores" do
       get "/api/arenas/1234/scores", headers: valid_authed_headers
 
       expect(response.status).to eq 404
-      expect(json_response[:errors]).to include "Arena with id 1234 not found"
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Arena with id 1234 not found"
     end
   end
 
