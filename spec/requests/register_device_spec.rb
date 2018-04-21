@@ -94,7 +94,8 @@ RSpec.describe "POST /api/devices" do
       post "/api/devices", params: parameters, headers: valid_authed_headers
 
       expect(response.status).to eq 422
-      expect(json_response[:errors]).to include "Token can't be blank"
+      expect(json_response[:errors].map { |error| error[:detail] }).to \
+        include "Token can't be blank"
     end
 
     it "does not create the device" do

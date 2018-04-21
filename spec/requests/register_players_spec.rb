@@ -88,7 +88,8 @@ RSpec.describe "POST /api/players" do
       post "/api/players", params: parameters, headers: valid_headers
 
       expect(response.status).to eq 422
-      expect(json_response[:errors]).to include "Password can't be blank"
+      expect(json_response[:errors].map { |error| error[:detail] }).to \
+        include "Password can't be blank"
     end
 
     it "does not create the player" do

@@ -54,7 +54,8 @@ RSpec.describe "POST /api/matches/:id/capture" do
       post url, headers: valid_authed_headers
 
       expect(response.status).to eq 422
-      expect(json_response[:errors]).to include "Match is not open"
+      expect(json_response[:errors].map { |error| error[:detail] }).to \
+        include "Match is not open"
     end
   end
 

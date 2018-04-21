@@ -12,7 +12,8 @@ class ApplicationController < ActionController::API
                 :set_current_user
 
   rescue_from ActiveRecord::RecordInvalid do |exception|
-    render_errors exception.record.errors.full_messages, :unprocessable_entity
+    render_jsonapi_errors \
+      JSONAPI::Exceptions::UnprocessableEntityError.new(exception.record.errors)
   end
 
   rescue_from ActiveRecord::RecordNotFound do |exception|
