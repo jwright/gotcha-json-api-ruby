@@ -25,7 +25,7 @@ module Documentation
               example name: JSONAPI::MEDIA_TYPE do
                 key :data, [{
                   id: "12345",
-                  type: "player",
+                  type: "session",
                   attributes: {
                     name: "Jimmy Page",
                     email_address: "jimmy@example.org",
