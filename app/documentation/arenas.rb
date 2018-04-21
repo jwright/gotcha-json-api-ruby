@@ -54,10 +54,18 @@ module Documentation
             response 401 do
               key :description, "Unauthorized"
               schema do
-                key :type, :string
+                key :type, :array
+                items do
+                  key :"$ref", :Error
+                end
               end
               example name: JSONAPI::MEDIA_TYPE do
-                key :errors, "Unauthorized"
+                key :errors, [{
+                  code: 401,
+                  detail: "Not authorized",
+                  status: 401,
+                  title: "Not authorized",
+                }]
               end
             end
           end
@@ -122,10 +130,18 @@ module Documentation
             response 401 do
               key :description, "Unauthorized"
               schema do
-                key :type, :string
+                key :type, :array
+                items do
+                  key :"$ref", :Error
+                end
               end
               example name: JSONAPI::MEDIA_TYPE do
-                key :errors, "Unauthorized"
+                key :errors, [{
+                  code: 401,
+                  detail: "Not authorized",
+                  status: 401,
+                  title: "Not authorized",
+                }]
               end
             end
           end
@@ -146,10 +162,18 @@ module Documentation
             response 401 do
               key :description, "Unauthorized"
               schema do
-                key :type, :string
+                key :type, :array
+                items do
+                  key :"$ref", :Error
+                end
               end
               example name: JSONAPI::MEDIA_TYPE do
-                key :errors, "Unauthorized"
+                key :errors, [{
+                  code: 401,
+                  detail: "Not authorized",
+                  status: 401,
+                  title: "Not authorized",
+                }]
               end
             end
           end
@@ -201,10 +225,18 @@ module Documentation
             response 401 do
               key :description, "Unauthorized"
               schema do
-                key :type, :string
+                key :type, :array
+                items do
+                  key :"$ref", :Error
+                end
               end
               example name: JSONAPI::MEDIA_TYPE do
-                key :errors, "Unauthorized"
+                key :errors, [{
+                  code: 401,
+                  detail: "Not authorized",
+                  status: 401,
+                  title: "Not authorized",
+                }]
               end
             end
           end

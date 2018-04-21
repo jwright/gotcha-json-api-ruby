@@ -38,10 +38,18 @@ module Documentation
             response 422 do
               key :description, "Unprocessable entity"
               schema do
-                key :type, :string
+                key :type, :array
+                items do
+                  key :"$ref", :Error
+                end
               end
               example name: JSONAPI::MEDIA_TYPE do
-                key :errors, "Password can't be blank. Email address is already registered."
+                key :errors, [{
+                  code: 422,
+                  detail: "Password can't be blank",
+                  status: 422,
+                  title: "Resource invalid",
+                }]
               end
             end
           end
