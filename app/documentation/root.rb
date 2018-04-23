@@ -4,6 +4,7 @@ require_relative "arenas"
 require_relative "devices"
 require_relative "matches"
 require_relative "players"
+require_relative "scores"
 require_relative "sessions"
 
 module Documentation
@@ -14,6 +15,7 @@ module Documentation
       base.send :include, Devices
       base.send :include, Matches
       base.send :include, Players
+      base.send :include, Scores
       base.send :include, Sessions
 
       base.class_eval do
@@ -81,6 +83,9 @@ module Documentation
           end
           tag name: "PLAYERS" do
             key :description, "Player operations"
+          end
+          tag name: "SCORES" do
+            key :description, "Score operations"
           end
           tag name: "SESSIONS" do
             key :description, "Session operations"
