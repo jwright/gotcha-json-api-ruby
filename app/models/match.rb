@@ -51,7 +51,7 @@ class Match < ApplicationRecord
   private
 
   def closed_match_status_cannot_be_updated
-    if found? && ignored?
+    if (pending? || found?) && ignored?
       errors.add(:base, "Match is not open")
     end
   end
