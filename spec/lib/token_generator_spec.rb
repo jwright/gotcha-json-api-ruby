@@ -21,5 +21,14 @@ RSpec.describe TokenGenerator do
 
       expect(tokens.uniq.length).to eq 50
     end
+
+    it "ensures that they are left padded with zeros" do
+      tokens = []
+      50.times do
+        tokens << described_class.generate_code(10)
+      end
+
+      expect(tokens.all? { |token| token.length == 10 }).to be_truthy
+    end
   end
 end

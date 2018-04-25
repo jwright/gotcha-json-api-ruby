@@ -6,6 +6,6 @@ class TokenGenerator
   end
 
   def self.generate_code(number_of_digits)
-    rand(10 ** number_of_digits).to_s
+    rand(10 ** number_of_digits).to_s.rjust(number_of_digits, "0")
   end
 end
