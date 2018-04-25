@@ -29,6 +29,12 @@ RSpec.describe "POST /api/matches/:id/captured" do
       expect(match.reload).to be_found
     end
 
+    it "processes the successful match" do
+      expect { post url, params: valid_parameters,
+                         headers: valid_authed_headers }.to \
+        have_enqueued_job(SuccessfulCaptureJob).with(match.id)
+    end
+
     it "creates a new match for the seeker" do
       expect { post url, params: valid_parameters,
                          headers: valid_authed_headers }.to \

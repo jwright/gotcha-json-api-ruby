@@ -27,6 +27,7 @@ class API::MatchesController < ApplicationController
         .new("Confirmation code does not match")
     end
 
+    SuccessfulCaptureJob.perform_later match.id
     MakeMatchJob.perform_later match.seeker_id, match.arena_id
     MakeMatchJob.perform_later match.opponent_id, match.arena_id
 
