@@ -9,6 +9,10 @@ class MatchSerializer
   belongs_to :opponent
   belongs_to :seeker
 
+  attribute :confirmation_code do |object|
+    object.confirmation_code if object.pending?
+  end
+
   attribute :found_at do |object|
     object.found_at.to_i if object.found?
   end
