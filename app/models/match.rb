@@ -9,14 +9,14 @@ class Match < ApplicationRecord
   scope :found, -> { where.not(found_at: nil) }
   scope :ignored, -> { where.not(ignored_at: nil) }
   scope :in, ->(arena) { where(arena_id: arena) }
-  scope :open, -> { where(found_at: nil, ignored_at: nil) }
+  scope :open, -> { where(found_at: nil, ignored_at: nil, pending_at: nil) }
 
   validates :matched_at, presence: true
   validate :closed_match_status_cannot_be_updated
   validate :seeker_cannot_be_opponent
 
   def closed?
-    found? || ignored?
+    found? || ignored? || pending?
   end
 
   def found!

@@ -1,18 +1,46 @@
 require "rails_helper"
 
 RSpec.describe Match do
-  let!(:active) { create :match, seeker: player }
-  let!(:found) { create :match, :found, opponent: player }
-  let!(:ignored) { create :match, :ignored }
   let(:player) { create :player }
 
+  describe "#closed?" do
+    it "is not closed when it is active" do
+      active = build :match
+
+      expect(active).to_not be_closed
+    end
+
+    it "is closed when it is found" do
+      found = build :match, :found
+
+      expect(found).to be_closed
+    end
+
+    it "is closed when it is ignored" do
+      ignored = build :match, :ignored
+
+      expect(ignored).to be_closed
+    end
+
+    it "is closed when it is pending" do
+      pending = build :match, :pending
+
+      expect(pending).to be_closed
+    end
+  end
+
   describe ".for" do
+    let!(:active) { create :match, seeker: player }
+    let!(:found) { create :match, :found, opponent: player }
+
     it "returns all matches for the specified player" do
       expect(described_class.for(player)).to match_array [active, found]
     end
   end
 
   describe ".found" do
+    let!(:found) { create :match, :found, opponent: player }
+
     it "returns all matches that were found" do
       expect(described_class.found).to match_array [found]
     end
@@ -49,6 +77,8 @@ RSpec.describe Match do
   end
 
   describe ".ignored" do
+    let!(:ignored) { create :match, :ignored }
+
     it "returns all matches that were ignored" do
       expect(described_class.ignored).to match_array [ignored]
     end
@@ -88,6 +118,10 @@ RSpec.describe Match do
   end
 
   describe ".open" do
+    let!(:active) { create :match, seeker: player }
+    let!(:found) { create :match, :found, opponent: player }
+    let!(:ignored) { create :match, :ignored }
+
     it "returns all matches that were not found or ignored" do
       expect(described_class.open).to match_array [active]
     end
