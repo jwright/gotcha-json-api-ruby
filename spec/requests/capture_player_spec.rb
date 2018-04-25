@@ -19,14 +19,10 @@ RSpec.describe "POST /api/matches/:id/capture" do
       expect(match.reload).to be_pending
     end
 
-    it "creates a new match for the seeker" do
-      expect { post url, headers: valid_authed_headers }.to \
-        have_enqueued_job(MakeMatchJob).with(match.seeker_id, match.arena_id)
-    end
+    it "generates a confirmation code for the match" do
+      post url, headers: valid_authed_headers
 
-    it "creates a new match for the opponent" do
-      expect { post url, headers: valid_authed_headers }.to \
-        have_enqueued_job(MakeMatchJob).with(match.opponent_id, match.arena_id)
+      expect(match.reload.confirmation_code.length).to eq 4
     end
 
     it "returns the json representation of the match" do
@@ -34,6 +30,8 @@ RSpec.describe "POST /api/matches/:id/capture" do
 
       expect(json_response[:data][:type]).to eq "match"
       expect(json_response[:data][:id]).to eq match.id.to_s
+      expect(json_response[:data][:attributes][:confirmation_code]).to \
+        eq match.reload.confirmation_code
     end
   end
 
