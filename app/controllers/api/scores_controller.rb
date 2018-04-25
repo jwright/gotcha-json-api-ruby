@@ -3,7 +3,11 @@ class API::ScoresController < ApplicationController
 
   def index
     scores = score_params[:filter].nil? ?
-      Score.all : Score.where(score_params[:filter])
+      Score.playable_by(current_user) :
+      Score.where(score_params[:filter])
+
+    # NOTE: There is a security issue here where anyone can find the
+    # scores of anyone in any arena
 
     meta = { total_points: scores.sum(&:points) }
 
