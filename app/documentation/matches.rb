@@ -5,9 +5,11 @@ module Documentation
 
         swagger_path "/matches/:id/capture" do
           operation :post do
-            key :summary, "Mark the match as found between the seeker and the opponent"
-            key :description, "Marks the match as found and starts new matches "\
-                              "for both the seeker and the opponent."
+            key :summary, "Mark the match as pending between the seeker and the opponent"
+            key :description, "Marks the match as pending and waits for a "\
+                              "confirmation code for the seeker and the "\
+                              "opponent which can be triggered by a push "\
+                              "notification."
             key :tags, ["MATCHES"]
             security do
               key :Bearer, []
@@ -22,6 +24,7 @@ module Documentation
                   id: "12345",
                   type: "match",
                   attributes: {
+                    confirmation_code: null,
                     found_at: 5632493294,
                     matched_at: 783287834764,
                   },
@@ -82,6 +85,12 @@ module Documentation
             end
             property :attributes do
               key :type, :object
+              property :confirmation_code do
+                key :type, :integer
+                key :format, :string
+                key :description, "A four digit code that can be used to "\
+                                  "confirm a capture."
+              end
               property :found_at do
                 key :type, :integer
                 key :format, :dateTime
