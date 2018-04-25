@@ -1,6 +1,6 @@
-require "houston"
-
 class NewMatchNotifier
+  include PushNotificationNotifier
+
   attr_reader :match
 
   def initialize(match)
@@ -19,16 +19,6 @@ class NewMatchNotifier
   end
 
   private
-
-  def client
-    @client ||= Houston::Client.respond_to?(Rails.env) ?
-                  Houston::Client.send(Rails.env) :
-                  Houston::Client.new
-  end
-
-  def notifications_for(player)
-    Device.for(player).map { |device| notification(player, device.token) }
-  end
 
   def notification(player, token)
     if opponent = match.opponent_for(player)
