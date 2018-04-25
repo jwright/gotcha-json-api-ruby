@@ -161,6 +161,22 @@ RSpec.describe Match do
     end
   end
 
+  describe "#pending!" do
+    subject { create :match }
+
+    it "sets the pending_at timestamp" do
+      subject.pending!
+
+      expect(subject.pending_at).to be_within(1.second).of(DateTime.now)
+    end
+
+    it "updates the record" do
+      subject.pending!
+
+      expect(subject).to_not be_changed
+    end
+  end
+
   describe "validations" do
     subject { build :match }
 

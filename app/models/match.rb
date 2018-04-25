@@ -40,6 +40,10 @@ class Match < ApplicationRecord
     return seeker if player == opponent
   end
 
+  def pending!
+    update_attributes! pending_at: DateTime.now
+  end
+
   def pending?
     pending_at.present?
   end
