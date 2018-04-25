@@ -27,6 +27,12 @@ class Match < ApplicationRecord
     found_at.present?
   end
 
+  def ignored!
+    update_attributes! pending_at: nil,
+                       confirmation_code: nil,
+                       ignored_at: DateTime.now
+  end
+
   def ignored?
     ignored_at.present?
   end

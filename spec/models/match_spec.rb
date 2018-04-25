@@ -98,6 +98,29 @@ RSpec.describe Match do
     end
   end
 
+  describe "#ignore!" do
+    subject { create :match }
+
+    it "sets the ignored_at timestamp" do
+      subject.ignored!
+
+      expect(subject.ignored_at).to be_within(1.second).of(DateTime.now)
+    end
+
+    it "clears confirmation code" do
+      subject.pending!
+      subject.ignored!
+
+      expect(subject.confirmation_code).to be_nil
+    end
+
+    it "updates the record" do
+      subject.ignored!
+
+      expect(subject).to_not be_changed
+    end
+  end
+
   describe ".in" do
     let(:arena_one) { create :arena }
     let(:arena_two) { create :arena }
@@ -208,5 +231,8 @@ RSpec.describe Match do
       expect(subject).to_not be_valid
       expect(subject.errors[:base]).to include "Match is not open"
     end
+
+    xit "a pending match must have a confirmation code present"
+    xit "only allows a confirmation code for pending or found matches"
   end
 end
