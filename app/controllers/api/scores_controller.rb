@@ -6,8 +6,11 @@ class API::ScoresController < ApplicationController
       Score.playable_by(current_user) :
       Score.where(score_params[:filter])
 
-    # NOTE: There is a security issue here where anyone can find the
-    # scores of anyone in any arena
+    # There is a more efficient way to do this in CanCan but
+    # with the current scopes, it is hard
+    scores.each do |score|
+      authorize! :read, score, message: "Not authorized to view that Score"
+    end
 
     meta = { total_points: scores.sum(&:points) }
 
@@ -25,6 +28,6 @@ class API::ScoresController < ApplicationController
   private
 
   def score_params
-    params.permit(:filter)
+    params.permit(filter: [:arena, :player])
   end
 end

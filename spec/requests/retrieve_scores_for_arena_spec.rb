@@ -36,6 +36,23 @@ RSpec.describe "GET /api/scores?filter[arena]=:arena_id" do
     end
   end
 
+  context "with a score in an arena the player is not playing in" do
+    let!(:score1) { create :score, arena: arena, player: player, points: 1 }
+    let!(:score2) { create :score, arena: arena, points: 1 }
+
+    before do
+      player.arenas.clear
+    end
+
+    it "returns an not authorized status" do
+      get url, headers: valid_authed_headers
+
+      expect(response).to be_unauthorized
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Not authorized to view that Score"
+    end
+  end
+
   it_behaves_like "an authenticated request" do
     let(:make_request) do
       -> (headers) do
