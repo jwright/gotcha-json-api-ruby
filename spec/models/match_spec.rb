@@ -56,6 +56,12 @@ RSpec.describe Match do
         expect(subject.found_at).to be_within(1.second).of(DateTime.now)
       end
 
+      it "clears the pending status" do
+        subject.found!(subject.confirmation_code)
+
+        expect(subject).to_not be_pending
+      end
+
       it "updates the record" do
         subject.found!(subject.confirmation_code)
 
