@@ -1,6 +1,7 @@
 require_relative "exceptions/error"
 require_relative "exceptions/runtime_error"
 
+require_relative "exceptions/invalid_parameter_error"
 require_relative "exceptions/missing_type_parameter_error"
 require_relative "exceptions/parameter_missing_error"
 require_relative "exceptions/precondition_failed_error"

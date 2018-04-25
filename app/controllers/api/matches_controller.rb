@@ -19,6 +19,10 @@ class API::MatchesController < ApplicationController
     end
 
     match.found! match_params[:confirmation_code]
+    unless match.found?
+      raise JSONAPI::Exceptions::InvalidParameterError
+        .new("Confirmation code does not match")
+    end
 
     MakeMatchJob.perform_later match.seeker_id, match.arena_id
     MakeMatchJob.perform_later match.opponent_id, match.arena_id

@@ -75,7 +75,24 @@ RSpec.describe "POST /api/matches/:id/captured" do
   end
 
   context "with a confirmation code that does not match" do
-    xit "returns an unprocessable entity status"
+    let(:parameters) do
+      {
+        data: {
+          type: "match",
+          attributes: {
+            confirmation_code: "blah"
+          }
+        }
+      }.to_json
+    end
+
+    it "returns a bad request status" do
+      post url, params: parameters, headers: valid_authed_headers
+
+      expect(response).to be_bad_request
+      expect(json_response[:errors].map { |error| error[:detail] }).to \
+        include "Confirmation code does not match"
+    end
   end
 
   context "with an arena that the player is not playing in" do
