@@ -14,6 +14,7 @@ FactoryBot.define do
     end
 
     trait :pending do
+      confirmation_code { TokenGenerator.generate_code(4) }
       pending_at { DateTime.now }
     end
   end

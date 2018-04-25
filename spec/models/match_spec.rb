@@ -232,7 +232,21 @@ RSpec.describe Match do
       expect(subject.errors[:base]).to include "Match is not open"
     end
 
-    xit "a pending match must have a confirmation code present"
-    xit "only allows a confirmation code for pending or found matches"
+    it "a pending match must have a confirmation code present" do
+      subject.pending_at = DateTime.now
+
+      expect(subject).to_not be_valid
+      expect(subject.errors[:confirmation_code]).to \
+        include "can't be blank for pending matches"
+    end
+
+    it "only allows a confirmation code for pending or found matches" do
+      subject.ignored_at = DateTime.now
+      subject.confirmation_code = "blah"
+
+      expect(subject).to_not be_valid
+      expect(subject.errors[:confirmation_code]).to \
+        include "must be blank for ignored matches"
+    end
   end
 end
