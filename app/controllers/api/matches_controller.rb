@@ -6,10 +6,15 @@ class API::MatchesController < ApplicationController
     authorize! :update, match, message: "Not authorized to play in that Match"
     match.pending!
 
-=begin
+    render json: MatchSerializer.new(match).serialized_json
+  end
+
+  def captured
+    match = Match.find params[:id]
+    match.found! match_params[:confirmation_code]
+
     MakeMatchJob.perform_later match.seeker_id, match.arena_id
     MakeMatchJob.perform_later match.opponent_id, match.arena_id
-=end
 
     render json: MatchSerializer.new(match).serialized_json
   end
@@ -30,6 +35,6 @@ class API::MatchesController < ApplicationController
   def match_params
     params.require(:data)
           .require(:attributes)
-          .permit(:arena_id)
+          .permit(:arena_id, :confirmation_code)
   end
 end
