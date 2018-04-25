@@ -11,6 +11,13 @@ class API::MatchesController < ApplicationController
 
   def captured
     match = Match.find params[:id]
+
+    authorize! :update, match, message: "Not authorized to play in that Match"
+    unless match.pending?
+      raise JSONAPI::Exceptions::PreconditionFailedError
+        .new("Match is not pending")
+    end
+
     match.found! match_params[:confirmation_code]
 
     MakeMatchJob.perform_later match.seeker_id, match.arena_id

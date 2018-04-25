@@ -50,4 +50,69 @@ RSpec.describe "POST /api/matches/:id/captured" do
         be_nil
     end
   end
+
+  context "with a match that does not exist" do
+    it "returns a not found status" do
+      post "/api/matches/-1/captured", params: valid_parameters,
+                                       headers: valid_authed_headers
+
+      expect(response).to be_not_found
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Match with id -1 not found"
+    end
+  end
+
+  context "with a match that is not pending" do
+    let(:match) { create :match, arena: arena, seeker: player }
+
+    it "returns a pre-condition failed status" do
+      post url, params: valid_parameters, headers: valid_authed_headers
+
+      expect(response.status).to eq 412
+      expect(json_response[:errors].map { |error| error[:detail] }).to \
+        include "Match is not pending"
+    end
+  end
+
+  context "with a confirmation code that does not match" do
+    xit "returns an unprocessable entity status"
+  end
+
+  context "with an arena that the player is not playing in" do
+    let(:match) { create :match }
+
+    it "returns a not authorized status" do
+      post url, params: valid_parameters, headers: valid_authed_headers
+
+      expect(response).to be_unauthorized
+      expect(json_response[:errors].first[:detail]).to \
+        eq "Not authorized to play in that Match"
+    end
+  end
+
+  it_behaves_like "an authenticated request" do
+    let(:make_request) do
+      -> (headers) do
+        post url, params: valid_parameters,
+                  headers: valid_headers.merge(headers)
+      end
+    end
+  end
+
+  it_behaves_like "a request responding to correct headers" do
+    let(:make_request) do
+      -> (headers) do
+        post url, params: valid_parameters,
+                  headers: valid_authed_headers.merge(headers)
+      end
+    end
+  end
+
+  it_behaves_like "a request requiring the correct type" do
+    let(:make_request) do
+      -> (params) do
+        post url, params: params, headers: valid_authed_headers
+      end
+    end
+  end
 end
