@@ -7,6 +7,10 @@ RSpec.describe "POST /api/matches/:id/capture" do
   let(:url) { "/api/matches/#{match.id}/capture" }
 
   context "with a valid request" do
+    before do
+      allow_any_instance_of(ConfirmCaptureNotifier).to receive(:notify_player!)
+    end
+
     it "returns an ok status" do
       post url, headers: valid_authed_headers
 
@@ -32,6 +36,15 @@ RSpec.describe "POST /api/matches/:id/capture" do
       expect(json_response[:data][:id]).to eq match.id.to_s
       expect(json_response[:data][:attributes][:confirmation_code]).to \
         eq match.reload.confirmation_code
+    end
+
+    it "sends a confirm capture push notification to the opponent" do
+      expect(ConfirmCaptureNotifier).to \
+          receive(:new).with(match).and_call_original
+      expect_any_instance_of(ConfirmCaptureNotifier).to \
+        receive(:notify_player!).with(match.opponent)
+
+      post url, headers: valid_authed_headers
     end
   end
 

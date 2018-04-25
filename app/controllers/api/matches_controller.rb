@@ -6,6 +6,9 @@ class API::MatchesController < ApplicationController
     authorize! :update, match, message: "Not authorized to play in that Match"
     match.pending!
 
+    ConfirmCaptureNotifier.new(match)
+      .notify_player!(match.opponent_for(current_user))
+
     render json: MatchSerializer.new(match).serialized_json
   end
 
