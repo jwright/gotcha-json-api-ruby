@@ -4,7 +4,7 @@ class API::MatchesController < ApplicationController
   def capture
     match = Match.find params[:id]
     authorize! :update, match, message: "Not authorized to play in that Match"
-    match.found!
+    match.pending!
 
     MakeMatchJob.perform_later match.seeker_id, match.arena_id
     MakeMatchJob.perform_later match.opponent_id, match.arena_id

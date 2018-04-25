@@ -13,10 +13,10 @@ RSpec.describe "POST /api/matches/:id/capture" do
       expect(response).to be_ok
     end
 
-    it "marks the match as found" do
+    it "marks the match as pending" do
       post url, headers: valid_authed_headers
 
-      expect(match.reload).to be_found
+      expect(match.reload).to be_pending
     end
 
     it "creates a new match for the seeker" do
