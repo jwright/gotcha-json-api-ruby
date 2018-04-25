@@ -170,6 +170,12 @@ RSpec.describe Match do
       expect(subject.pending_at).to be_within(1.second).of(DateTime.now)
     end
 
+    it "generates a 4-digit confirmation code" do
+      subject.pending!
+
+      expect(subject.confirmation_code.length).to eq 4
+    end
+
     it "updates the record" do
       subject.pending!
 

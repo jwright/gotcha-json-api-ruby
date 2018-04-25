@@ -41,7 +41,8 @@ class Match < ApplicationRecord
   end
 
   def pending!
-    update_attributes! pending_at: DateTime.now
+    update_attributes! confirmation_code: TokenGenerator.generate_code(4),
+                       pending_at: DateTime.now
   end
 
   def pending?
