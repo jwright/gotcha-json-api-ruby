@@ -74,4 +74,34 @@ RSpec.describe Ability do
       expect(subject).to be_able_to :read, someone_else
     end
   end
+
+  context "for a score" do
+    let(:score) { create :score }
+
+    it "can read a score in an arena the player is playing in" do
+      player.arenas << score.arena
+
+      expect(subject).to be_able_to :read, score
+    end
+
+    it "cannot update a score in an arena the player is playing in" do
+      player.arenas << score.arena
+
+      expect(subject).to_not be_able_to :update, score
+    end
+
+    it "cannot delete a score in an arena the player is playing in" do
+      player.arenas << score.arena
+
+      expect(subject).to_not be_able_to :delete, score
+    end
+
+    it "cannot create a score" do
+      expect(subject).to_not be_able_to :create, Score
+    end
+
+    it "cannot read a score in another arena" do
+      expect(subject).to_not be_able_to :read, score
+    end
+  end
 end
