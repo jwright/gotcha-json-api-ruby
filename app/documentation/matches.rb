@@ -60,7 +60,12 @@ module Documentation
                 end
               end
               example name: JSONAPI::MEDIA_TYPE do
-                key :errors, "Unauthorized"
+                key :errors, [{
+                  code: 401,
+                  title: "Not Authorized",
+                  detail: "Not Authorized",
+                  status: 401
+                }]
               end
             end
           end
@@ -133,6 +138,7 @@ module Documentation
               end
               example name: JSONAPI::MEDIA_TYPE do
                 key :errors, [{
+                  code: 400,
                   title: "Invalid parameter",
                   detail: "Confirmation code does not match",
                   status: 400
@@ -149,6 +155,7 @@ module Documentation
               end
               example name: JSONAPI::MEDIA_TYPE do
                 key :errors, [{
+                  code: 401,
                   title: "Not Authorized",
                   detail: "Not Authorized",
                   status: 401
@@ -165,6 +172,7 @@ module Documentation
               end
               example name: JSONAPI::MEDIA_TYPE do
                 key :errors, [{
+                  code: 412,
                   title: "Precondition failed",
                   detail: "Match was not pending",
                   status: 412
