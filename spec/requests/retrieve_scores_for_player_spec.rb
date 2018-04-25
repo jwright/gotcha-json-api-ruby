@@ -8,6 +8,7 @@ RSpec.describe "GET /api/scores?filter[player]=:player_id" do
   context "with a valid request" do
     let!(:score1) { create :score, arena: arena, player: player, points: 1 }
     let!(:score2) { create :score, arena: arena, player: player, points: 1 }
+    let!(:score3) { create :score, arena: arena, points: 1 }
 
     it "returns an ok status" do
       get url, headers: valid_authed_headers
