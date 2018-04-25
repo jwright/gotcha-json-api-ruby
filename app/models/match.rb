@@ -40,6 +40,10 @@ class Match < ApplicationRecord
     return seeker if player == opponent
   end
 
+  def pending?
+    pending_at.present?
+  end
+
   private
 
   def closed_match_status_cannot_be_updated

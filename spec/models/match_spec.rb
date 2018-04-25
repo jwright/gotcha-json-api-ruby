@@ -113,6 +113,20 @@ RSpec.describe Match do
     end
   end
 
+  describe "#pending?" do
+    it "returns true if the pending_at timestamp is set" do
+      subject = build :match, :pending
+
+      expect(subject).to be_pending
+    end
+
+    it "returns false if the pending_at timestamp is not set" do
+      subject = build :match
+
+      expect(subject).to_not be_pending
+    end
+  end
+
   describe "validations" do
     subject { build :match }
 

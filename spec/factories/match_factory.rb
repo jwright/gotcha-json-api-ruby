@@ -12,5 +12,9 @@ FactoryBot.define do
     trait :ignored do
       ignored_at { DateTime.now }
     end
+
+    trait :pending do
+      pending_at { DateTime.now }
+    end
   end
 end
