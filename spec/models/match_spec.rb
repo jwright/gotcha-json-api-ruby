@@ -47,18 +47,28 @@ RSpec.describe Match do
   end
 
   describe "#found!" do
-    subject { create :match }
+    subject { create :match, :pending }
 
-    it "sets the found_at timestamp" do
-      subject.found!
+    context "with a correct confirmation code" do
+      it "sets the found_at timestamp" do
+        subject.found!(subject.confirmation_code)
 
-      expect(subject.found_at).to be_within(1.second).of(DateTime.now)
+        expect(subject.found_at).to be_within(1.second).of(DateTime.now)
+      end
+
+      it "updates the record" do
+        subject.found!(subject.confirmation_code)
+
+        expect(subject).to_not be_changed
+      end
     end
 
-    it "updates the record" do
-      subject.found!
+    context "with an incorrect confirmation code" do
+      it "does not set the found_at timestamp" do
+        subject.found!("blah")
 
-      expect(subject).to_not be_changed
+        expect(subject).to_not be_found
+      end
     end
   end
 

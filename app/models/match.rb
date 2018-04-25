@@ -21,8 +21,11 @@ class Match < ApplicationRecord
     found? || ignored? || pending?
   end
 
-  def found!
-    update_attributes! found_at: DateTime.now
+  def found!(confirmation_code)
+    if (!confirmation_code.to_s.blank? &&
+        confirmation_code.to_s == self.confirmation_code.to_s)
+      update_attributes! found_at: DateTime.now
+    end
   end
 
   def found?
