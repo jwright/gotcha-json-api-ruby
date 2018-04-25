@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :devices, only: [:create, :destroy]
     resources :matches, only: :create do
       post :capture, on: :member
+      post :captured, on: :member
     end
     resources :players, only: [:create, :show]
     resources :scores, only: :index

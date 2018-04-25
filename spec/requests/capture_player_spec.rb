@@ -7,26 +7,26 @@ RSpec.describe "POST /api/matches/:id/capture" do
   let(:url) { "/api/matches/#{match.id}/capture" }
 
   context "with a valid request" do
+    before do
+      allow_any_instance_of(ConfirmCaptureNotifier).to receive(:notify_player!)
+    end
+
     it "returns an ok status" do
       post url, headers: valid_authed_headers
 
       expect(response).to be_ok
     end
 
-    it "marks the match as found" do
+    it "marks the match as pending" do
       post url, headers: valid_authed_headers
 
-      expect(match.reload).to be_found
+      expect(match.reload).to be_pending
     end
 
-    it "creates a new match for the seeker" do
-      expect { post url, headers: valid_authed_headers }.to \
-        have_enqueued_job(MakeMatchJob).with(match.seeker_id, match.arena_id)
-    end
+    it "generates a confirmation code for the match" do
+      post url, headers: valid_authed_headers
 
-    it "creates a new match for the opponent" do
-      expect { post url, headers: valid_authed_headers }.to \
-        have_enqueued_job(MakeMatchJob).with(match.opponent_id, match.arena_id)
+      expect(match.reload.confirmation_code.length).to eq 4
     end
 
     it "returns the json representation of the match" do
@@ -34,6 +34,17 @@ RSpec.describe "POST /api/matches/:id/capture" do
 
       expect(json_response[:data][:type]).to eq "match"
       expect(json_response[:data][:id]).to eq match.id.to_s
+      expect(json_response[:data][:attributes][:confirmation_code]).to \
+        eq match.reload.confirmation_code
+    end
+
+    it "sends a confirm capture push notification to the opponent" do
+      expect(ConfirmCaptureNotifier).to \
+          receive(:new).with(match).and_call_original
+      expect_any_instance_of(ConfirmCaptureNotifier).to \
+        receive(:notify_player!).with(match.opponent)
+
+      post url, headers: valid_authed_headers
     end
   end
 

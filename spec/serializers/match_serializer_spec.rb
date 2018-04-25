@@ -18,7 +18,7 @@ RSpec.describe MatchSerializer do
 
     it "serializes the attributes" do
       expect(hash[:attributes].keys).to \
-        match_array [:found_at, :matched_at]
+        match_array [:confirmation_code, :found_at, :matched_at]
     end
 
     it "returns the datetimes in unix Epoch time" do

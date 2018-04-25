@@ -39,11 +39,31 @@ RSpec.describe MatchMaker do
 
     context "with two matched players in a previous match" do
       let!(:match) do
-        create :match, :ignored, arena: arena, seeker: player_one, opponent: player_two
+        create :match,
+          :ignored,
+          arena: arena,
+          seeker: player_one,
+          opponent: player_two
       end
 
       it "does not create a match" do
-        expect(described_class.match!(player: player_two, arena: arena)).to be_nil
+        expect(described_class.match!(player: player_two, arena: arena)).to \
+          be_nil
+      end
+    end
+
+    context "with a pending match between players in the same arena" do
+      let!(:match) do
+        create :match,
+          :pending,
+          arena: arena,
+          seeker: player_one,
+          opponent: player_two
+      end
+
+      it "does not create a new match" do
+        expect(described_class.match!(player: player_two, arena: arena)).to \
+          be_nil
       end
     end
 
@@ -53,7 +73,11 @@ RSpec.describe MatchMaker do
       before do
         player_one.arenas << arena2
         player_two.arenas << arena2
-        create :match, :found, arena: arena2, seeker: player_one, opponent: player_two
+        create :match,
+          :found,
+          arena: arena2,
+          seeker: player_one,
+          opponent: player_two
       end
 
       it "creates a new match between the two players" do

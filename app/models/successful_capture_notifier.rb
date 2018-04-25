@@ -1,4 +1,4 @@
-class NewMatchNotifier
+class SuccessfulCaptureNotifier
   include PushNotificationNotifier
 
   attr_reader :match
@@ -23,8 +23,8 @@ class NewMatchNotifier
   def notification(player, token)
     if opponent = match.opponent_for(player)
       notification = Houston::Notification.new(device: token)
-      notification.alert = "Gotcha! #{opponent.name} is out to get 'cha!"
-      notification.category = :new_match
+      notification.alert = "Gotcha! You just met #{opponent.name}!"
+      notification.category = :successful_capture
       notification.badge = Match.for(player).open.count
       notification.custom_data = MatchSerializer.new(match).serializable_hash
       notification

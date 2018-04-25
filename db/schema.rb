@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180407195029) do
+ActiveRecord::Schema.define(version: 20180425120500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,8 @@ ActiveRecord::Schema.define(version: 20180407195029) do
     t.datetime "ignored_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "pending_at"
+    t.string "confirmation_code"
     t.index ["arena_id"], name: "index_matches_on_arena_id"
     t.index ["opponent_id"], name: "index_matches_on_opponent_id"
     t.index ["seeker_id"], name: "index_matches_on_seeker_id"
