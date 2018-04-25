@@ -8,8 +8,8 @@ class ConfirmCaptureNotifier
   end
 
   def notify_player!(player)
-    notifications_for(player).each do |notification|
-      client.push notification unless notification.nil?
+    notifications_for(player).compact.each do |notification|
+      client.push notification
     end
   end
 
