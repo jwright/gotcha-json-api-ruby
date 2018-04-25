@@ -18,6 +18,10 @@ class Ability
       can :read, Player do |someone_else|
         player.matched_with?(someone_else)
       end
+
+      can :read, Score do |score|
+        score.arena && score.arena.playable_by?(player)
+      end
     end
   end
 end

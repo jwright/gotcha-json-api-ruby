@@ -1,13 +1,14 @@
 require "request_helper"
 
-RSpec.describe "GET /api/arenas/:id/scores" do
+RSpec.describe "GET /api/scores?filter[arena]=:arena_id" do
   let(:arena) { create :arena }
   let(:player) { create :player, :authorized, arenas: [arena] }
-  let(:url) { "/api/arenas/#{arena.id}/scores" }
+  let(:url) { "/api/scores?filter[arena]=#{arena.id}" }
 
   context "with a valid request" do
     let!(:score1) { create :score, arena: arena, player: player, points: 1 }
     let!(:score2) { create :score, arena: arena, player: player, points: 1 }
+    let!(:score3) { create :score, player: player, points: 1 }
 
     it "returns an ok status" do
       get url, headers: valid_authed_headers
@@ -36,13 +37,20 @@ RSpec.describe "GET /api/arenas/:id/scores" do
     end
   end
 
-  context "with an invalid arena id" do
-    it "returns a not found status" do
-      get "/api/arenas/1234/scores", headers: valid_authed_headers
+  context "with a score in an arena the player is not playing in" do
+    let!(:score1) { create :score, arena: arena, player: player, points: 1 }
+    let!(:score2) { create :score, arena: arena, points: 1 }
 
-      expect(response.status).to eq 404
+    before do
+      player.arenas.clear
+    end
+
+    it "returns an not authorized status" do
+      get url, headers: valid_authed_headers
+
+      expect(response).to be_unauthorized
       expect(json_response[:errors].first[:detail]).to \
-        eq "Arena with id 1234 not found"
+        eq "Not authorized to view that Score"
     end
   end
 
