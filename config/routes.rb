@@ -17,4 +17,5 @@ Rails.application.routes.draw do
   end
 
   resources :docs, path: "/api/docs", only: :index
+  resource :workshop, only: :show
 end
