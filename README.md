@@ -89,16 +89,6 @@ git remote add staging https://git.heroku.com/gotcha-api-staging.git
 git push staging master
 ```
 
-## IMPROVEMENTS
-
-This project can be improved in a multiple of ways. These were not implemented as it would complicate the workshop.
-
-### Authorization
-
-The API endpoints do not ensure that the current `Player` can implement the actions. For example, the `DELETE /api/devices/:id` endpoint does not check to ensure that only the player who was assigned the device can delete it.
-
-Usually I use [CanCan](https://github.com/CanCanCommunity/cancancan) to ensure the authorization of the endpoint is appropriate.
-
 ## CONTRIBUTING
 
 1. Clone the repository `git clone https://github.com/jwright/gotcha-api`
