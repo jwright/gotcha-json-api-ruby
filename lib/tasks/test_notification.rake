@@ -30,7 +30,7 @@ task send_test_match: :environment do
   NewMatchNotifier.new(match).notify!
 
   match.destroy
-  seeker.destroy if seeker.created_at > 40.seconds.ago
-  opponent.destroy if opponent.created_at > 40.seconds.ago
-  arena.destroy if arena.created_at > 40.seconds.ago
+  seeker.destroy if seeker.created_at < 40.seconds.ago
+  opponent.destroy if opponent.created_at < 40.seconds.ago
+  arena.destroy if arena.created_at < 40.seconds.ago
 end
