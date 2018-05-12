@@ -4,9 +4,12 @@ module PushNotificationNotifier
   private
 
   def client
+    @client ||=Houston::Client.development
+=begin
     @client ||= Houston::Client.respond_to?(Rails.env) ?
                   Houston::Client.send(Rails.env) :
                   Houston::Client.new
+=end
   end
 
   def notifications_for(player)
